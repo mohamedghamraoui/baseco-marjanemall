@@ -1,0 +1,255 @@
+<script>
+  let allTemplates = [];
+  let categoriesMap = {};
+  let currentTemplate = null;
+  let selectedLang = '';
+
+  const categorieSelect = document.getElementById('categorie');
+  const modeleSelect = document.getElementById('modele');
+  const langueSelect = document.getElementById('langue');
+  const dynamicFieldsCard = document.getElementById('dynamicFieldsCard');
+  const dynamicFields = document.getElementById('dynamicFields');
+  const messagePreviewCard = document.getElementById('messagePreviewCard');
+  const messagePreview = document.getElementById('messagePreview');
+  const copyBtn = document.getElementById('copyBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const loadingOverlay = document.getElementById('loadingOverlay');
+  const notification = document.getElementById('notification');
+  const notificationText = document.getElementById('notificationText');
+
+  document.addEventListener('DOMContentLoaded', initialize);
+
+  function initialize() {
+    loadTemplates();
+    categorieSelect.addEventListener('change', onCategoryChange);
+    modeleSelect.addEventListener('change', onTemplateChange);
+    langueSelect.addEventListener('change', onLanguageChange);
+    copyBtn.addEventListener('click', copyMessageToClipboard);
+    resetBtn.addEventListener('click', resetForm);
+  }
+
+  function loadTemplates() {
+    showLoading(true);
+    google.script.run
+      .withSuccessHandler(processTemplates)
+      .withFailureHandler(handleError)
+      .chargerMessages();
+  }
+
+  function processTemplates(result) {
+    showLoading(false);
+
+    if (result.error) {
+      showNotification(result.error, 'error');
+      return;
+    }
+
+    allTemplates = result.templates;
+    categoriesMap = result.categoriesMap;
+    populateCategories(result.categories);
+  }
+
+  function populateCategories(categories) {
+    while (categorieSelect.options.length > 1) {
+      categorieSelect.remove(1);
+    }
+
+    categories.forEach(category => {
+      const option = document.createElement('option');
+      option.value = category;
+      option.textContent = category;
+      categorieSelect.appendChild(option);
+    });
+  }
+
+  function onCategoryChange() {
+    const selectedCategory = categorieSelect.value;
+    resetForm(false);
+    langueSelect.disabled = true;
+    if (!selectedCategory) {
+      modeleSelect.disabled = true;
+      return;
+    }
+
+    modeleSelect.disabled = false;
+    populateTemplates(selectedCategory);
+  }
+
+  function populateTemplates(category) {
+    while (modeleSelect.options.length > 1) {
+      modeleSelect.remove(1);
+    }
+
+    if (categoriesMap[category]) {
+      categoriesMap[category].forEach(template => {
+        const option = document.createElement('option');
+        option.value = template.titre;
+        option.textContent = template.titre;
+        option.dataset.template = JSON.stringify(template);
+        modeleSelect.appendChild(option);
+      });
+    }
+  }
+
+  function onTemplateChange() {
+    const selectedOption = modeleSelect.options[modeleSelect.selectedIndex];
+    langueSelect.disabled = true;
+
+    if (!selectedOption || modeleSelect.selectedIndex === 0) {
+      hideDynamicSections();
+      return;
+    }
+
+    currentTemplate = JSON.parse(selectedOption.dataset.template);
+    langueSelect.disabled = false;
+    langueSelect.selectedIndex = 0; // reset language selection
+    hideDynamicSections();
+  }
+
+  function onLanguageChange() {
+    selectedLang = langueSelect.value;
+
+    if (!selectedLang || !currentTemplate) {
+      hideDynamicSections();
+      return;
+    }
+
+    // Extraire les variables depuis le bon champ selon la langue
+    const messageToParse = selectedLang === 'ar' ? currentTemplate.message_ar : currentTemplate.message_fr;
+
+    google.script.run
+      .withSuccessHandler(createDynamicFields)
+      .withFailureHandler(handleError)
+      .extractVariables(messageToParse);
+  }
+
+  function createDynamicFields(variables) {
+    if (!variables || variables.length === 0) {
+      dynamicFieldsCard.style.display = 'none';
+      updateMessagePreview({});
+      return;
+    }
+
+    dynamicFields.innerHTML = '';
+    variables.forEach(variable => {
+      const fieldRow = document.createElement('div');
+      fieldRow.className = 'field-row';
+
+      const label = document.createElement('label');
+      label.setAttribute('for', `field-${variable}`);
+      label.textContent = variable + ':';
+
+      const input = document.createElement('input');
+      input.type = variable.toLowerCase().includes('date') ? 'date' : 'text';
+      input.className = 'form-control';
+      input.id = `field-${variable}`;
+      input.dataset.variable = variable;
+      input.placeholder = `Entrez ${variable}`;
+
+      input.addEventListener('input', updatePreviewFromInputs);
+      input.addEventListener('change', updatePreviewFromInputs);
+
+      fieldRow.appendChild(label);
+      fieldRow.appendChild(input);
+      dynamicFields.appendChild(fieldRow);
+    });
+
+    dynamicFieldsCard.style.display = 'block';
+    messagePreviewCard.style.display = 'block';
+    updatePreviewFromInputs();
+  }
+
+  function updatePreviewFromInputs() {
+    const variableValues = {};
+    const inputs = dynamicFields.querySelectorAll('input');
+
+    inputs.forEach(input => {
+      const variable = input.dataset.variable;
+      let value = input.value.trim();
+      if (input.type === 'date' && value) {
+        const date = new Date(value);
+        value = date.toLocaleDateString('fr-FR');
+      }
+      variableValues[variable] = value;
+    });
+
+    updateMessagePreview(variableValues);
+  }
+
+  function updateMessagePreview(variableValues) {
+    if (!currentTemplate || !selectedLang) return;
+
+    let message = selectedLang === 'ar' ? currentTemplate.message_ar : currentTemplate.message_fr;
+
+    for (const variable in variableValues) {
+      const placeholder = `[${variable}]`;
+      const value = variableValues[variable] || placeholder;
+      message = message.split(placeholder).join(value);
+    }
+
+    messagePreview.textContent = message;
+    messagePreviewCard.style.display = 'block';
+  }
+
+  function copyMessageToClipboard() {
+    const text = messagePreview.textContent;
+    if (!text) {
+      showNotification('Aucun message à copier', 'error');
+      return;
+    }
+
+    if (text.includes('[') && text.includes(']')) {
+      const confirmCopy = confirm('Certains champs sont vides. Voulez-vous quand même copier le message?');
+      if (!confirmCopy) return;
+    }
+
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+
+    showNotification('Message copié dans le presse-papiers!');
+  }
+
+  function resetForm(fullReset = true) {
+    if (fullReset) {
+      categorieSelect.selectedIndex = 0;
+      modeleSelect.selectedIndex = 0;
+      modeleSelect.disabled = true;
+      langueSelect.selectedIndex = 0;
+      langueSelect.disabled = true;
+    }
+
+    hideDynamicSections();
+    dynamicFields.innerHTML = '';
+    messagePreview.textContent = '';
+    currentTemplate = null;
+    selectedLang = '';
+  }
+
+  function hideDynamicSections() {
+    dynamicFieldsCard.style.display = 'none';
+    messagePreviewCard.style.display = 'none';
+  }
+
+  function showLoading(show) {
+    loadingOverlay.style.display = show ? 'flex' : 'none';
+  }
+
+  function showNotification(message, type = 'success') {
+    notificationText.textContent = message;
+    notification.className = 'notification ' + type;
+    notification.classList.add('show');
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
+
+  function handleError(error) {
+    showLoading(false);
+    console.error('Error:', error);
+    showNotification('Erreur: ' + error, 'error');
+  }
+</script>

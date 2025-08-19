@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Connaissances Marjanemall - Intelcia</title>
+    <meta name="description" content="Système expert de support client pour Marjanemall - Guide complet des processus et procédures pour les agents du centre de relation client">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #14B8A6;
+            --primary-hover: #0F766E;
+            --secondary-color: #F97316;
+            --background: #F8FAFC;
+            --card-background: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --border-color: #E5E7EB;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 320px;
+            background: var(--card-background);
+            border-right: 1px solid var(--border-color);
+            padding: 1.5rem;
+            overflow-y: auto;
+            box-shadow: var(--shadow-md);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1000;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            transition: all 0.2s;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+        }
+
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .sidebar-overlay.show {
+            opacity: 1;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border-radius: 1rem;
+            color: white;
+        }
+
+        .logo-icon {
+            width: 3rem;
+            height: 3rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.75rem;
+            font-size: 1.5rem;
+        }
+
+        .logo-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .logo-subtitle {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        /* Search Styles */
+        .search-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-container {
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border: 2px solid var(--border-color);
+            border-radius: 0.75rem;
+            font-size: 0.875rem;
+            background: var(--card-background);
+            transition: all 0.2s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        /* Favorites Styles */
+        .favorites-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .favorites-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .favorite-item {
+            padding: 0.75rem;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.875rem;
+        }
+
+        .favorite-item:hover {
+            background: #F1F5F9;
+            border-color: var(--primary-color);
+        }
+
+        /* Tree Styles */
+        .tree-section {
+            flex: 1;
+        }
+
+        .tree-category {
+            margin-bottom: 1rem;
+        }
+
+        .category-header {
+            padding: 0.75rem;
+            background: linear-gradient(135deg, #F8F9FA, #E9ECEF);
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-color);
+        }
+
+        .category-header:hover {
+            background: linear-gradient(135deg, #E9ECEF, #DEE2E6);
+        }
+
+        .category-icon {
+            color: var(--primary-color);
+        }
+
+        .subcategory-list {
+            margin-top: 0.5rem;
+            padding-left: 1rem;
+        }
+
+        .subcategory-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .subcategory-header {
+            padding: 0.5rem 0.75rem;
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.375rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.875rem;
+        }
+
+        .subcategory-header:hover {
+            background: #F8FAFC;
+            border-color: var(--primary-color);
+        }
+
+        .process-list {
+            margin-top: 0.375rem;
+            padding-left: 1rem;
+        }
+
+        .process-item {
+            padding: 0.5rem 0.75rem;
+            background: var(--card-background);
+            border: 1px solid #F1F5F9;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.25rem;
+            font-size: 0.8125rem;
+        }
+
+        .process-item:hover {
+            background: var(--primary-color);
+            color: white;
+            transform: translateX(0.25rem);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+        }
+
+        .welcome-screen {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .welcome-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            border-radius: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 2rem;
+            color: white;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .welcome-subtitle {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-background);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        /* Process Details Styles */
+        .process-details {
+            background: var(--card-background);
+            border-radius: 1rem;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .process-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .process-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .process-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .favorite-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+        }
+
+        .favorite-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .process-content {
+            padding: 2rem;
+        }
+
+        .overview-section {
+            background: #F8FAFC;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 2rem;
+        }
+
+        .overview-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .overview-text {
+            color: var(--text-secondary);
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* Sections Styles */
+        .sections-container {
+            background: var(--card-background);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .sections-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+            color: white;
+            padding: 1rem 1.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-item {
+            border-bottom: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-item:hover {
+            background: #F8FAFC;
+        }
+
+        .section-content {
+            padding: 1.5rem;
+        }
+
+        .section-number {
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--primary-color);
+            color: white;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+        }
+
+        .section-process, .section-overview {
+            background: #F1F5F9;
+            border-left: 4px solid var(--secondary-color);
+            padding: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+            margin-bottom: 1rem;
+        }
+
+        .section-process-title, .section-overview-title {
+            font-weight: 600;
+            color: var(--secondary-color);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .section-escalade {
+            background: #FEF3CD;
+            border-left: 4px solid #F59E0B;
+            padding: 1rem;
+            border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        .section-escalade-title {
+            font-weight: 600;
+            color: #D97706;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .section-escalade-text {
+            color: #92400E;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .section-text {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            line-height: 1.6;
+            white-space: pre-line;
+        }
+
+        /* External Link Preview Styles */
+        .external-link-preview {
+            margin: 1rem 0;
+            padding: 1rem;
+            background: linear-gradient(135deg, #EBF8FF, #DBEAFE);
+            border: 1px solid #BFDBFE;
+            border-radius: 0.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .link-preview-header {
+            display: flex;
+            align-items: start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .link-preview-icon {
+            width: 3rem;
+            height: 3rem;
+            background: #3B82F6;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.125rem;
+        }
+
+        .link-preview-content h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #1E40AF;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .link-preview-description {
+            color: #1E40AF;
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+
+        .link-preview-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .link-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #3B82F6;
+            color: white;
+            text-decoration: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .link-btn:hover {
+            background: #2563EB;
+        }
+
+        .toggle-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: #BFDBFE;
+            color: #1E40AF;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .toggle-btn:hover {
+            background: #93C5FD;
+        }
+
+        .link-expanded-info {
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(147, 197, 253, 0.3);
+            border-radius: 0.5rem;
+            border: 1px solid rgba(147, 197, 253, 0.5);
+        }
+
+        .link-expanded-info h5 {
+            font-weight: 600;
+            color: #1E40AF;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .link-expanded-info ul {
+            color: #1E40AF;
+            font-size: 0.75rem;
+            margin-left: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .link-expanded-info li {
+            margin-bottom: 0.25rem;
+        }
+
+        .warning-box {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #FEF3CD;
+            border-left: 2px solid #F59E0B;
+            border-radius: 0 0.25rem 0.25rem 0;
+        }
+
+        .warning-text {
+            color: #92400E;
+            font-size: 0.75rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                position: relative;
+            }
+
+            #updateBanner {
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            #updateBanner button {
+                right: 0.5rem;
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+            
+            .sidebar {
+                position: fixed;
+                top: 0;
+                left: -320px;
+                width: 280px;
+                height: 100vh;
+                z-index: 999;
+                border-right: none;
+                box-shadow: var(--shadow-xl);
+                transition: left 0.3s ease;
+            }
+            
+            .sidebar.open {
+                left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: block;
+            }
+            
+            .main-content {
+                padding: 4rem 1rem 1rem;
+                width: 100%;
+            }
+            
+            .process-header {
+                padding: 1.5rem 1rem;
+            }
+            
+            .process-content {
+                padding: 1.5rem 1rem;
+            }
+            
+            .welcome-screen {
+                padding: 2rem 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .section-content {
+                padding: 1rem;
+            }
+
+            .link-preview-header {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .link-preview-actions {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 260px;
+                left: -260px;
+            }
+            
+            .main-content {
+                padding: 4rem 0.5rem 0.5rem;
+            }
+            
+            .process-title {
+                font-size: 1.5rem;
+            }
+            
+            .logo-title {
+                font-size: 1.125rem;
+            }
+        }
+
+        /* Animation Classes */
+        .fade-in {
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>  
+    <!-- Mobile Sidebar Toggle -->
+    <button class="sidebar-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars" id="sidebar-toggle-icon"></i>
+    </button>
+    
+    <!-- Sidebar Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+    
+    <!-- Bannière de mise à jour des processus -->
+    <div id="updateBanner" style="
+        background: linear-gradient(135deg, #F59E0B, #D97706);
+        color: white;
+        padding: 0.75rem 1rem;
+        text-align: center;
+        font-weight: 500;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        position: relative;
+        z-index: 1001;
+    ">
+        <i class="fas fa-info-circle" style="margin-right: 0.5rem;"></i>
+        <strong>MISE À JOUR IMPORTANTE :</strong> Les processus ont été actualisés le 19 Août 2025. 
+        Consultez les nouvelles procédures pour un service client optimal.
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <!-- Logo Section -->
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-title">Base Co Marjanemall</div>
+                <div class="logo-subtitle">Système Expert - Intelcia</div>
+            </div>
+
+            <!-- Search Section -->
+            <div class="search-section">
+                <div class="search-container">
+                    <input type="text" id="searchInput" class="search-input" placeholder="Rechercher un processus...">
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+            </div>
+
+            <!-- Favorites Section -->
+            <div class="favorites-section">
+                <div class="section-title">
+                    <i class="fas fa-star"></i>
+                    Processus Favoris
+                </div>
+                <div id="favoritesList" class="favorites-list">
+                    <!-- Favorites will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Règles Générales Section -->
+            <div class="general-rules-section" style="margin-bottom: 2rem;">
+                <div class="section-title">
+                    <i class="fas fa-gavel"></i>
+                    Règles Générales de Traitement
+                </div>
+                <div style="background: #FEF3CD; border: 1px solid #F59E0B; border-radius: 0.5rem; padding: 1rem;">
+                    <button onclick="toggleGeneralRules()" style="
+                        width: 100%;
+                        background: transparent;
+                        border: none;
+                        color: #92400E;
+                        font-weight: 600;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        cursor: pointer;
+                        padding: 0;
+                        font-size: 0.875rem;
+                    ">
+                        <span><i class="fas fa-exclamation-triangle" style="margin-right: 0.5rem;"></i>Afficher les règles essentielles</span>
+                        <i class="fas fa-chevron-down" id="rules-chevron"></i>
+                    </button>
+                    <div id="generalRulesContent" class="hidden" style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid #F59E0B;">
+                        <div style="font-size: 0.75rem; color: #92400E; line-height: 1.4;">
+                            <div style="margin-bottom: 0.5rem;"><strong>1. Accueil :</strong> Toujours se présenter et présenter la cellule Marjanemall</div>
+                            <div style="margin-bottom: 0.5rem;"><strong>2. Sécurisation :</strong> Demander l'adresse email et numéro de commande pour toute demande</div>
+                            <div style="margin-bottom: 0.5rem;"><strong>3. Traitement :</strong> Suivre les processus établis et documenter chaque action</div>
+                            <div style="margin-bottom: 0.5rem;"><strong>4. Communication :</strong> Notifier le client par email ou SMS avant clôture</div>
+                            <div><strong>5. Escalade :</strong> Utiliser les macros appropriées pour les remontées</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tree Section -->
+            <div class="tree-section">
+                <div class="section-title">
+                    <i class="fas fa-sitemap"></i>
+                    Arborescence des Processus
+                </div>
+                <div id="knowledgeTree">
+                    <!-- Tree will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div id="welcomeScreen" class="welcome-screen">
+                <div class="welcome-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h1 class="welcome-title">Base de Connaissances Marjanemall</h1>
+                <p class="welcome-subtitle">
+                    Système Expert de Support Client - Powered by Intelcia<br>
+                    Sélectionnez un processus dans l'arborescence pour voir les détails
+                </p>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalProcesses">0</span>
+                        <span class="stat-label">Processus Disponibles</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" id="totalFavorites">0</span>
+                        <span class="stat-label">Favoris</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="processDetails" class="hidden">
+                <!-- Process details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Knowledge Base Data
+        const knowledgeBaseData = {
+            "Annulation de la commande": {
+                "Expédiée": {
+                    "Refus de livraison": {
+                        title: "Refus de livraison",
+                        category: "Annulation de la commande",
+                        subcategory: "Expédiée",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes expédiées.\n\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\n\nIl est à noter qu'à la base, il est impossible d'annuler une commande expédiée. Pour cela, le CRC propose au client de bien refuser la livraison alors que le livreur l'a contacté pour la livraison. Dans ce cas, on fait distinction entre deux cas de figures de livraison :",
+                        sections: [
+                            {
+                                title: "Annulation d'une commande livrée à Domicile",
+                                process: "La livraison à domicile : Dans ce cas, le livreur, lors de l'expédition de la commande contacte le client afin de lui fixer la livraison et son heure de passage. Le client peut demander l'annulation de sa commande. De la part du livreur, il est tenu de traiter la demande client et qualifié le cas comme un échec de livraison suite à la demande client.",
+                                escalade: "Remontée en >> PAUSE << au Log. Niv2 - Transport local en demandant de bien qualifier la commande à la base comme échec de livraison."
+                            },
+                            {
+                                title: "Annulation d'une commande livrée via AMANA",
+                                process: "La livraison assurée via AMANA : Dans ce cas, le client est tenu de ne pas se présenter chez l'Agence AMANA dans laquelle sa commande est mise à sa disposition pour le retrait.\n\nNoter bien que le conseiller est tenu de vérifier via le fiche des zones de livraison s'il s'agit d'une livraison à domicile ou bien via AMANA.",
+                                hasExternalLink: true,
+                                externalLink: "https://script.google.com/a/macros/intelcia.com/s/AKfycbyIsebC6zgYOVwlJS8XHJsscBFDxhmOR1ONJNej71TDs_JKoRoWaCANxRo2yAcgksW83Q/exec",
+                                escalade: ""
+                            },
+                            {
+                                title: "Traitement GRC de la demande client",
+                                process: "En ce qui concerne le traitement CRC, le conseiller est tenu à traiter la demande client conformément à ce qui suit :\nAccueil : Le conseiller se présente et présente la cellule Marjanemall\nSécurisation : Conformément à la demande CDO, lorsqu'il s'agit d'une demande d'annulation de la commande, l'agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d'annulation.\nTraitement de la demande : Le conseiller est tenu d'informer le client que nous n'avons pas la capacité de bien annuler sa commande. Il est tenu aussi de demander au client de bien refuser sa livraison. A titre d'information, si le client insiste, le conseiller est tenu de bien remonter le cas au Log. Niv2/Transport local en demandant de bien qualifier la commande à la base comme échec de livraison et ne pas contacter le client.\nIl faut bien évidemment signaler que le conseiller est tenu par obligation de bien notifier au moins le client via un Mail ou un AS avant de clôturer le ticket.",
+                                escalade: ""
+                            }
+                        ]
+                    }
+                },
+                "Non expédiée": {
+                    "Annulation Client": {
+                        title: "Annulation Client",
+                        category: "Annulation de la commande",
+                        subcategory: "Non expédiée",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes, sous réserve que celles-ci n'aient pas encore été expédiées.\n\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\n\nIl faut au préalable faire distinction entre deux cas :",
+                        sections: [
+                            {
+                                title: "Annulation via RS, Mail, MobileSDK ou AE",
+                                process: "Une annulation de la part du client via les RS, Mail, MobileSDK ou AE : Il s'agit dans ce cas d'une manifestation client afin de demander l'annulation de sa commande. Ceci est un traitement nécessitant une interaction avec le client et par la suite procéder à l'annulation.",
+                                overview: "1. Accueil : Le conseiller se présente et présente la cellule MarjaneMall\n\n2. Sécurisation : Conformément à la demande CDO, lorsqu'elle s'agit d'une demande d'annulation de la commande, l'agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d'annulation.\n\n3. Traitement de la demande : Le conseiller est tenu de confirmer la prise en compte de l'annulation, rassurer le client et l'informer du processus de remboursement.",
+                                escalade: ""
+                            },
+                            {
+                                title: "Annulation via espace client",
+                                process: "Une annulation via son espace client : Lors qu'il s'agit d'une annulation client via son espace client, il s'est traité comme un ticket API nommé. Dans ce cas, il s'agit purement d'un traitement BACK OFFICE. C'est à dire le traitement n'entraine aucune interaction avec le client.",
+                                overview: "1. Remplissage Zendesk : L'agent est tenu à remplir les informations nécessaires sur Zendesk :\n   - Choisir API comme Canal de réception\n   - Choisir DEMANDE d'ANNULATION comme Catégorie\n   - Assigner le NUMÉRO DE LA COMMANDE OBJET D'ANNULATION\n   - Choisir ANNULATION CLIENT comme qualification\n\n2. Suppression commande SCALE : Demander la suppression de la commande sur SCALE s'il s'agit d'une commande FFM",
+                                escalade: "Remontée en >> PAUSE << au Log. Niv2 - Prépa Commandes en demandant la suppression de la commande via la Macro 'Demande d'annulation Scale'."
+                            }
+                        ]
+                    },
+                    "Annulation Système": {
+                        title: "Annulation Système",
+                        category: "Annulation de la commande",
+                        subcategory: "Non expédiée",
+                        overview: "Processus de traitement des annulations automatiques par le système",
+                        sections: []
+                    }
+                }
+            }
+        };
+
+        // Additional processes data
+        const additionalProcesses = [
+            { category: "Confirmation de la commande", subcategory: "Annulée", title: "Commande rejetée", overview: "Traitement des commandes rejetées par le système" },
+            { category: "Confirmation de la commande", subcategory: "Confirmée", title: "Confirmée avec Appel", overview: "Processus de confirmation par appel téléphonique" },
+            { category: "Coupon", subcategory: "Gestion", title: "Coupon Consommé", overview: "Traitement des demandes pour coupons déjà utilisés" },
+            { category: "Coupon", subcategory: "Gestion", title: "Coupon Expiré", overview: "Gestion des coupons expirés" },
+            { category: "Demande de Retour", subcategory: "Problèmes produit", title: "Accessoire Manquant", overview: "Traitement des demandes pour accessoires manquants" },
+            { category: "Demande de Retour", subcategory: "Rétractation", title: "Produit Éligible", overview: "Processus de rétractation pour produits éligibles" },
+            { category: "Demande SAV", subcategory: "Support", title: "Prise en Charge", overview: "Processus de prise en charge SAV" },
+            { category: "Informations", subcategory: "Client", title: "Informations Compte Client", overview: "Fourniture d'informations sur le compte client" },
+            { category: "Livraison", subcategory: "Gestion", title: "Changement de Coordonnées", overview: "Modification des coordonnées de livraison" },
+            { category: "Paiement / Remboursement", subcategory: "Facture", title: "Demande de Facture", overview: "Traitement des demandes de facturation" },
+            { category: "Réclamation", subcategory: "Produit", title: "Produit Manquant", overview: "Traitement des réclamations pour produits manquants" }
+        ];
+
+        // Global variables
+        let allProcesses = [];
+        let favorites = JSON.parse(localStorage.getItem('marjanemall-favorites') || '[]');
+        let currentProcess = null;
+
+        // Initialize application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeBanner();
+            initializeProcesses();
+            buildKnowledgeTree();
+            updateFavoritesList();
+            updateStats();
+            setupSearch();
+        });
+
+        // Initialize processes from data
+        function initializeProcesses() {
+            allProcesses = [];
+            let processId = 1;
+
+            // Process main knowledge base data
+            Object.entries(knowledgeBaseData).forEach(([category, subcategories]) => {
+                Object.entries(subcategories).forEach(([subcategory, processes]) => {
+                    Object.entries(processes).forEach(([processKey, processData]) => {
+                        allProcesses.push({
+                            id: `proc_${processId++}`,
+                            ...processData,
+                            category,
+                            subcategory
+                        });
+                    });
+                });
+            });
+
+            // Add additional processes
+            additionalProcesses.forEach(processData => {
+                allProcesses.push({
+                    id: `proc_${processId++}`,
+                    ...processData,
+                    sections: []
+                });
+            });
+        }
+
+        // Build knowledge tree
+        function buildKnowledgeTree() {
+            const tree = document.getElementById('knowledgeTree');
+            const categories = {};
+
+            allProcesses.forEach(process => {
+                if (!categories[process.category]) {
+                    categories[process.category] = {};
+                }
+                if (!categories[process.category][process.subcategory]) {
+                    categories[process.category][process.subcategory] = [];
+                }
+                categories[process.category][process.subcategory].push(process);
+            });
+
+            tree.innerHTML = '';
+            Object.entries(categories).forEach(([category, subcategories]) => {
+                const categoryEl = document.createElement('div');
+                categoryEl.className = 'tree-category';
+                
+                categoryEl.innerHTML = `
+                    <div class="category-header" onclick="toggleCategory('${category}')">
+                        <span><i class="fas fa-folder category-icon"></i> ${category}</span>
+                        <i class="fas fa-chevron-down" id="chevron-${category}"></i>
+                    </div>
+                    <div class="subcategory-list" id="cat-${category}" style="display: none;">
+                        ${Object.entries(subcategories).map(([subcategory, processes]) => `
+                            <div class="subcategory-item">
+                                <div class="subcategory-header" onclick="toggleSubcategory('${category}', '${subcategory}')">
+                                    <span><i class="fas fa-folder-open"></i> ${subcategory}</span>
+                                    <i class="fas fa-chevron-down" id="chevron-${category}-${subcategory}"></i>
+                                </div>
+                                <div class="process-list" id="subcat-${category}-${subcategory}" style="display: none;">
+                                    ${processes.map(process => `
+                                        <div class="process-item" onclick="selectProcess('${process.id}')">
+                                            <i class="fas fa-file-alt"></i> ${process.title}
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                
+                tree.appendChild(categoryEl);
+            });
+        }
+
+        // Toggle category
+        function toggleCategory(category) {
+            const categoryEl = document.getElementById(`cat-${category}`);
+            const chevron = document.getElementById(`chevron-${category}`);
+            
+            if (categoryEl.style.display === 'none') {
+                categoryEl.style.display = 'block';
+                chevron.className = 'fas fa-chevron-up';
+            } else {
+                categoryEl.style.display = 'none';
+                chevron.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Toggle subcategory
+        function toggleSubcategory(category, subcategory) {
+            const subcategoryEl = document.getElementById(`subcat-${category}-${subcategory}`);
+            const chevron = document.getElementById(`chevron-${category}-${subcategory}`);
+            
+            if (subcategoryEl.style.display === 'none') {
+                subcategoryEl.style.display = 'block';
+                chevron.className = 'fas fa-chevron-up';
+            } else {
+                subcategoryEl.style.display = 'none';
+                chevron.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Select process
+        function selectProcess(processId) {
+            const process = allProcesses.find(p => p.id === processId);
+            if (!process) return;
+
+            currentProcess = process;
+            displayProcessDetails(process);
+            
+            // Hide welcome screen and show process details
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('processDetails').classList.remove('hidden');
+        }
+
+        // Display process details
+        function displayProcessDetails(process) {
+            const detailsEl = document.getElementById('processDetails');
+            const isFavorite = favorites.includes(process.id);
+            
+            let sectionsHTML = '';
+            if (process.sections && process.sections.length > 0) {
+                sectionsHTML = `
+                    <div class="sections-container fade-in">
+                        <div class="sections-header">
+                            <i class="fas fa-tasks"></i>
+                            Sections Détaillées du Processus
+                        </div>
+                        ${process.sections.map((section, index) => `
+                            <div class="section-item">
+                                <div class="section-content">
+                                    <div class="section-number">${index + 1}</div>
+                                    <h4 class="section-title">${section.title}</h4>
+                                    
+                                    ${section.process ? `
+                                        <div class="section-process">
+                                            <div class="section-process-title">
+                                                <i class="fas fa-cogs"></i>
+                                                Processus
+                                            </div>
+                                            <div class="section-text">${section.process}</div>
+                                            ${section.hasExternalLink ? `
+                                                <div class="external-link-preview">
+                                                    <div class="link-preview-header">
+                                                        <div class="link-preview-icon">
+                                                            <i class="fas fa-map-marked-alt"></i>
+                                                        </div>
+                                                        <div class="link-preview-content">
+                                                            <h4><i class="fas fa-external-link-alt"></i> Outil de Vérification des Zones de Livraison</h4>
+                                                            <p class="link-preview-description">
+                                                                Cet outil permet de vérifier si une commande doit être livrée à domicile ou via AMANA. 
+                                                                Il est essentiel de consulter cette fiche avant de traiter une demande d'annulation.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="link-preview-actions">
+                                                        <a href="${section.externalLink}" target="_blank" class="link-btn">
+                                                            <i class="fas fa-external-link-alt"></i>
+                                                            Ouvrir l'outil
+                                                        </a>
+                                                        <button class="toggle-btn" onclick="toggleLinkInfo(${index})">
+                                                            <i class="fas fa-chevron-down" id="toggle-icon-${index}"></i>
+                                                            Plus d'infos
+                                                        </button>
+                                                    </div>
+                                                    <div class="link-expanded-info hidden" id="expanded-info-${index}">
+                                                        <h5><i class="fas fa-info-circle"></i> Instructions d'utilisation</h5>
+                                                        <ul>
+                                                            <li>Entrez l'adresse de livraison ou la ville</li>
+                                                            <li>Vérifiez si la zone est couverte par la livraison à domicile</li>
+                                                            <li>Identifiez les agences AMANA disponibles si nécessaire</li>
+                                                            <li>Utilisez ces informations pour traiter la demande client</li>
+                                                        </ul>
+                                                        <div class="warning-box">
+                                                            <p class="warning-text">
+                                                                <i class="fas fa-exclamation-triangle"></i>
+                                                                <strong>Important :</strong> Cette vérification est obligatoire pour toute demande d'annulation de commande expédiée.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ` : ''}
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${section.overview ? `
+                                        <div class="section-overview">
+                                            <div class="section-overview-title">
+                                                <i class="fas fa-list-alt"></i>
+                                                Étapes Détaillées
+                                            </div>
+                                            <div class="section-text">${section.overview}</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    ${section.escalade ? `
+                                        <div class="section-escalade">
+                                            <div class="section-escalade-title">
+                                                <i class="fas fa-exclamation-triangle"></i>
+                                                Escalade
+                                            </div>
+                                            <div class="section-escalade-text">${section.escalade}</div>
+                                        </div>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            }
+            
+            detailsEl.innerHTML = `
+                <div class="process-details fade-in">
+                    <div class="process-header">
+                        <h1 class="process-title">${process.title}</h1>
+                        <div class="process-meta">
+                            <span><i class="fas fa-folder"></i> ${process.category}</span>
+                            <span><i class="fas fa-tag"></i> ${process.subcategory}</span>
+                        </div>
+                        <button class="favorite-btn" onclick="toggleFavorite('${process.id}')">
+                            <i class="fas fa-star${isFavorite ? '' : '-o'}"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="process-content">
+                        <div class="overview-section">
+                            <div class="overview-title">
+                                <i class="fas fa-info-circle"></i>
+                                Aperçu du Processus
+                            </div>
+                            <div class="overview-text">${process.overview || 'Aucune description disponible pour ce processus.'}</div>
+                        </div>
+                        
+                        ${sectionsHTML}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle link info
+        function toggleLinkInfo(index) {
+            const expandedInfo = document.getElementById(`expanded-info-${index}`);
+            const toggleIcon = document.getElementById(`toggle-icon-${index}`);
+            
+            if (expandedInfo.classList.contains('hidden')) {
+                expandedInfo.classList.remove('hidden');
+                toggleIcon.className = 'fas fa-chevron-up';
+            } else {
+                expandedInfo.classList.add('hidden');
+                toggleIcon.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Toggle favorite
+        function toggleFavorite(processId) {
+            const index = favorites.indexOf(processId);
+            if (index === -1) {
+                favorites.push(processId);
+            } else {
+                favorites.splice(index, 1);
+            }
+            
+            localStorage.setItem('marjanemall-favorites', JSON.stringify(favorites));
+            updateFavoritesList();
+            updateStats();
+            
+            // Update current process display if it's the one being toggled
+            if (currentProcess && currentProcess.id === processId) {
+                displayProcessDetails(currentProcess);
+            }
+        }
+
+        // Update favorites list
+        function updateFavoritesList() {
+            const favoritesEl = document.getElementById('favoritesList');
+            
+            if (favorites.length === 0) {
+                favoritesEl.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.875rem; padding: 1rem; text-align: center;">Aucun favori pour le moment</div>';
+                return;
+            }
+            
+            favoritesEl.innerHTML = favorites.map(processId => {
+                const process = allProcesses.find(p => p.id === processId);
+                if (!process) return '';
+                
+                return `
+                    <div class="favorite-item" onclick="selectProcess('${process.id}')">
+                        <i class="fas fa-star"></i> ${process.title}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('totalProcesses').textContent = allProcesses.length;
+            document.getElementById('totalCategories').textContent = [...new Set(allProcesses.map(p => p.category))].length;
+            document.getElementById('totalFavorites').textContent = favorites.length;
+        }
+
+        // Setup search
+        function setupSearch() {
+            const searchInput = document.getElementById('searchInput');
+            let searchTimeout;
+            
+            searchInput.addEventListener('input', function() {
+                clearTimeout(searchTimeout);
+                searchTimeout = setTimeout(() => {
+                    const query = this.value.toLowerCase().trim();
+                    if (query) {
+                        performSearch(query);
+                    } else {
+                        buildKnowledgeTree();
+                    }
+                }, 300);
+            });
+        }
+
+        // Advanced search function with scoring
+        function performSearch(query) {
+            if (!query || query.length < 2) {
+                buildKnowledgeTree();
+                return;
+            }
+
+            const searchTerms = query.toLowerCase().split(/\s+/).filter(term => term.length > 1);
+            const results = [];
+
+            allProcesses.forEach(process => {
+                let score = 0;
+                let matchedTerms = new Set();
+
+                // Create searchable content
+                const searchableContent = [
+                    { text: process.title, weight: 10 },
+                    { text: process.category, weight: 5 },
+                    { text: process.subcategory, weight: 5 },
+                    { text: process.overview || '', weight: 3 },
+                    { text: process.sections ? process.sections.map(s => s.title + ' ' + (s.process || '') + ' ' + (s.overview || '')).join(' ') : '', weight: 2 }
+                ];
+
+                searchTerms.forEach(term => {
+                    searchableContent.forEach(content => {
+                        const text = content.text.toLowerCase();
+                        if (text.includes(term)) {
+                            // Exact match bonus
+                            if (text === term) {
+                                score += content.weight * 3;
+                            }
+                            // Start of word match bonus
+                            else if (text.startsWith(term) || text.includes(' ' + term)) {
+                                score += content.weight * 2;
+                            }
+                            // Partial match
+                            else {
+                                score += content.weight;
+                            }
+                            matchedTerms.add(term);
+                        }
+                        
+                        // Fuzzy matching for typos (Levenshtein distance)
+                        if (term.length >= 3) {
+                            const words = text.split(/\s+/);
+                            words.forEach(word => {
+                                if (word.length >= 3 && getEditDistance(term, word) <= Math.floor(term.length / 3)) {
+                                    score += content.weight * 0.5;
+                                    matchedTerms.add(term);
+                                }
+                            });
+                        }
+                    });
+                });
+
+                // Bonus for matching all search terms
+                if (matchedTerms.size === searchTerms.length) {
+                    score += 5;
+                }
+
+                // Bonus for popular/important processes
+                const importantKeywords = ['annulation', 'refus', 'livraison', 'commande', 'paiement', 'remboursement'];
+                if (importantKeywords.some(keyword => process.title.toLowerCase().includes(keyword))) {
+                    score += 2;
+                }
+
+                if (score > 0) {
+                    results.push({
+                        ...process,
+                        score: score,
+                        matchedTerms: Array.from(matchedTerms)
+                    });
+                }
+            });
+
+            // Sort by score (descending) and then by title
+            results.sort((a, b) => {
+                if (b.score !== a.score) return b.score - a.score;
+                return a.title.localeCompare(b.title);
+            });
+
+            displaySearchResults(results, query);
+        }
+
+        // Calculate edit distance for fuzzy matching
+        function getEditDistance(str1, str2) {
+            const matrix = [];
+            for (let i = 0; i <= str2.length; i++) {
+                matrix[i] = [i];
+            }
+            for (let j = 0; j <= str1.length; j++) {
+                matrix[0][j] = j;
+            }
+            for (let i = 1; i <= str2.length; i++) {
+                for (let j = 1; j <= str1.length; j++) {
+                    if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+                        matrix[i][j] = matrix[i - 1][j - 1];
+                    } else {
+                        matrix[i][j] = Math.min(
+                            matrix[i - 1][j - 1] + 1,
+                            matrix[i][j - 1] + 1,
+                            matrix[i - 1][j] + 1
+                        );
+                    }
+                }
+            }
+            return matrix[str2.length][str1.length];
+        }
+
+        // Display search results with enhanced information
+        function displaySearchResults(results, query) {
+            const tree = document.getElementById('knowledgeTree');
+            
+            if (results.length === 0) {
+                const suggestions = generateSearchSuggestions(query);
+                tree.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: var(--text-secondary);">
+                        <i class="fas fa-search" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                        <div style="margin-bottom: 1rem;">Aucun résultat pour "${query}"</div>
+                        ${suggestions.length > 0 ? `
+                            <div style="text-align: left;">
+                                <div style="font-weight: 500; margin-bottom: 0.5rem; color: var(--text-primary);">Suggestions :</div>
+                                ${suggestions.map(suggestion => `
+                                    <div style="padding: 0.5rem; background: var(--card-background); border: 1px solid var(--border-color); border-radius: 0.25rem; margin-bottom: 0.25rem; cursor: pointer;" onclick="document.getElementById('searchInput').value='${suggestion}'; performSearch('${suggestion}');">
+                                        <i class="fas fa-lightbulb" style="color: var(--secondary-color); margin-right: 0.5rem;"></i> ${suggestion}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                return;
+            }
+            
+            // Group results by score ranges for better UX
+            const topResults = results.filter(r => r.score >= 10);
+            const goodResults = results.filter(r => r.score < 10 && r.score >= 5);
+            const otherResults = results.filter(r => r.score < 5);
+            
+            tree.innerHTML = `
+                <div style="margin-bottom: 1rem; padding: 0.75rem; background: var(--primary-color); color: white; border-radius: 0.5rem; font-weight: 500;">
+                    <i class="fas fa-search"></i> ${results.length} résultat${results.length > 1 ? 's' : ''} pour "${query}"
+                    <button onclick="document.getElementById('searchInput').value=''; buildKnowledgeTree();" style="float: right; background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 0.25rem; padding: 0.25rem 0.5rem; cursor: pointer; font-size: 0.75rem;">
+                        <i class="fas fa-times"></i> Effacer
+                    </button>
+                </div>
+                
+                ${topResults.length > 0 ? `
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.75rem; font-weight: 600; color: var(--primary-color); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <i class="fas fa-star"></i> Correspondances exactes
+                        </div>
+                        ${topResults.map(process => createSearchResultItem(process, query, 'exact')).join('')}
+                    </div>
+                ` : ''}
+                
+                ${goodResults.length > 0 ? `
+                    <div style="margin-bottom: 1rem;">
+                        <div style="font-size: 0.75rem; font-weight: 600; color: var(--secondary-color); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <i class="fas fa-check-circle"></i> Correspondances pertinentes
+                        </div>
+                        ${goodResults.map(process => createSearchResultItem(process, query, 'good')).join('')}
+                    </div>
+                ` : ''}
+                
+                ${otherResults.length > 0 ? `
+                    <div>
+                        <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                            <i class="fas fa-search-plus"></i> Autres résultats
+                        </div>
+                        ${otherResults.slice(0, 10).map(process => createSearchResultItem(process, query, 'other')).join('')}
+                    </div>
+                ` : ''}
+            `;
+        }
+
+        // Create search result item with enhanced styling
+        function createSearchResultItem(process, query, type) {
+            const typeColors = {
+                exact: 'border-l-4 border-green-400 bg-green-50',
+                good: 'border-l-4 border-orange-400 bg-orange-50',
+                other: 'border-l-2 border-gray-300 bg-gray-50'
+            };
+            
+            const relevanceText = process.score >= 15 ? 'Très pertinent' : 
+                                 process.score >= 10 ? 'Pertinent' : 
+                                 process.score >= 5 ? 'Modérément pertinent' : 'Peu pertinent';
+            
+            return `
+                <div class="process-item slide-in" onclick="selectProcess('${process.id}'); closeSidebar();" 
+                     style="margin-bottom: 0.5rem; padding: 0.75rem; ${typeColors[type] || ''}; cursor: pointer; transition: all 0.2s;">
+                    <div style="display: flex; justify-content: between; align-items: start; margin-bottom: 0.5rem;">
+                        <div style="flex: 1;">
+                            <div style="font-weight: 500; margin-bottom: 0.25rem;">
+                                <i class="fas fa-file-alt"></i> ${highlightText(process.title, query)}
+                            </div>
+                            <div style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.25rem;">
+                                ${process.category} > ${process.subcategory}
+                            </div>
+                            <div style="font-size: 0.65rem; color: var(--primary-color); font-weight: 500;">
+                                ${relevanceText} (Score: ${Math.round(process.score)})
+                            </div>
+                        </div>
+                    </div>
+                    ${process.overview ? `
+                        <div style="font-size: 0.7rem; color: var(--text-secondary); line-height: 1.4; margin-top: 0.5rem;">
+                            ${highlightText(truncateText(process.overview, 100), query)}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // Generate search suggestions based on common terms
+        function generateSearchSuggestions(query) {
+            const suggestions = [];
+            const commonTerms = [
+                'annulation', 'commande', 'livraison', 'refus', 'paiement', 'remboursement', 
+                'coupon', 'retour', 'facture', 'réclamation', 'SAV', 'client', 'produit',
+                'expédiée', 'confirmée', 'AMANA', 'domicile', 'escalade', 'système'
+            ];
+            
+            // Find similar terms using edit distance
+            commonTerms.forEach(term => {
+                if (query.length >= 3 && getEditDistance(query.toLowerCase(), term.toLowerCase()) <= 2) {
+                    suggestions.push(term);
+                }
+            });
+            
+            // Add partial matches
+            commonTerms.forEach(term => {
+                if (term.toLowerCase().includes(query.toLowerCase()) || query.toLowerCase().includes(term.toLowerCase())) {
+                    if (!suggestions.includes(term)) {
+                        suggestions.push(term);
+                    }
+                }
+            });
+            
+            return suggestions.slice(0, 3);
+        }
+
+        // Truncate text helper
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substr(0, maxLength).trim() + '...';
+        }
+
+        // Enhanced highlight text with multiple terms
+        function highlightText(text, query) {
+            if (!query) return text;
+            const terms = query.split(/\s+/).filter(term => term.length > 1);
+            let highlightedText = text;
+            
+            terms.forEach(term => {
+                const regex = new RegExp(`(${escapeRegExp(term)})`, 'gi');
+                highlightedText = highlightedText.replace(regex, '<mark style="background: #FEF3CD; padding: 0.125rem 0.25rem; border-radius: 0.25rem; font-weight: 500;">$1</mark>');
+            });
+            
+            return highlightedText;
+        }
+
+        // Escape regex special characters
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        // Banner functions
+        function closeBanner() {
+            const banner = document.getElementById('updateBanner');
+            banner.style.display = 'none';
+            localStorage.setItem('marjanemall-banner-closed', 'true');
+        }
+
+        // General rules toggle
+        function toggleGeneralRules() {
+            const content = document.getElementById('generalRulesContent');
+            const chevron = document.getElementById('rules-chevron');
+            
+            if (content.classList.contains('hidden')) {
+                content.classList.remove('hidden');
+                chevron.className = 'fas fa-chevron-up';
+            } else {
+                content.classList.add('hidden');
+                chevron.className = 'fas fa-chevron-down';
+            }
+        }
+
+        // Check banner state on load
+        function initializeBanner() {
+            const bannerClosed = localStorage.getItem('marjanemall-banner-closed');
+            if (bannerClosed === 'true') {
+                document.getElementById('updateBanner').style.display = 'none';
+            }
+        }
+
+        // Sidebar toggle functions for mobile
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('sidebar-toggle-icon');
+            
+            if (sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                sidebar.classList.add('open');
+                overlay.style.display = 'block';
+                setTimeout(() => overlay.classList.add('show'), 10);
+                icon.className = 'fas fa-times';
+            }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            const icon = document.getElementById('sidebar-toggle-icon');
+            
+            sidebar.classList.remove('open');
+            overlay.classList.remove('show');
+            setTimeout(() => overlay.style.display = 'none', 300);
+            icon.className = 'fas fa-bars';
+        }
+
+        // Auto-close sidebar on mobile when selecting a process
+        function selectProcessMobile(processId) {
+            selectProcess(processId);
+            if (window.innerWidth <= 768) {
+                closeSidebar();
+            }
+        }
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                closeSidebar();
+            }
+        });
+
+        // Make functions global for onclick handlers
+        window.toggleCategory = toggleCategory;
+        window.toggleSubcategory = toggleSubcategory;
+        window.selectProcess = selectProcess;
+        window.toggleFavorite = toggleFavorite;
+        window.toggleLinkInfo = toggleLinkInfo;
+        window.toggleSidebar = toggleSidebar;
+        window.closeSidebar = closeSidebar;
+        window.performSearch = performSearch;
+        window.closeBanner = closeBanner;
+        window.toggleGeneralRules = toggleGeneralRules;
+    </script>
+</body>
+</html>

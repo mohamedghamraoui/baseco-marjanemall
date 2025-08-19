@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base de Connaissances Marjanemall - Intelcia</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-deep: #006E6A;
+            --teal-light: #00B8A9;
+            --neutral-bg: #F5F5F5;
+            --neutral-border: #E0E0E0;
+            --background: #ffffff;
+            --foreground: #1f2937;
+            --border: #e5e7eb;
+            --orange: #FF6B35;
+            --orange-light: #FF8A65;
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* Bannière roulante */
+        .rolling-banner {
+            background: linear-gradient(45deg, var(--teal-deep), var(--teal-light), var(--orange), var(--orange-light));
+            background-size: 400% 400%;
+            animation: gradientShift 6s ease infinite;
+            color: white;
+            padding: 12px 0;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .banner-content {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+            font-weight: 600;
+            font-size: 18px;
+            letter-spacing: 1px;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .banner-text {
+            padding: 0 50px;
+            display: inline-flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        /* Layout principal */
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 48px);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 35%;
+            background: white;
+            border-right: 2px solid var(--border);
+            overflow-y: auto;
+            max-height: calc(100vh - 48px);
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        }
+        
+        .sidebar-header {
+            background: var(--teal-deep);
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        .sidebar-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .search-container {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 70px;
+            background: white;
+            z-index: 9;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            border-color: var(--teal-light);
+            box-shadow: 0 0 0 3px rgba(0, 184, 169, 0.1);
+            outline: none;
+        }
+        
+        .tree-container {
+            padding: 1rem;
+        }
+        
+        .tree-category {
+            margin-bottom: 1rem;
+        }
+        
+        .category-header {
+            background: var(--teal-light);
+            color: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .category-header:hover {
+            background: var(--teal-deep);
+        }
+        
+        .category-arrow {
+            transition: transform 0.3s ease;
+        }
+        
+        .category-header.expanded .category-arrow {
+            transform: rotate(90deg);
+        }
+        
+        .subcategories {
+            display: none;
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+        }
+        
+        .subcategories.expanded {
+            display: block;
+        }
+        
+        .subcategory {
+            margin-bottom: 0.5rem;
+        }
+        
+        .subcategory-header {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            padding: 0.6rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s ease;
+        }
+        
+        .subcategory-header:hover {
+            background: var(--orange-light);
+            color: white;
+        }
+        
+        .processes {
+            display: none;
+            margin-top: 0.5rem;
+            margin-left: 1rem;
+        }
+        
+        .processes.expanded {
+            display: block;
+        }
+        
+        .process-item {
+            background: white;
+            border: 1px solid var(--border);
+            padding: 0.5rem;
+            margin-bottom: 0.3rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-left: 3px solid var(--teal-light);
+        }
+        
+        .process-item:hover {
+            background: var(--teal-light);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .process-item.active {
+            background: var(--orange);
+            color: white;
+            border-left-color: var(--orange);
+        }
+        
+        /* Zone de contenu principale */
+        .content-area {
+            width: 65%;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .content-header {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .content-header h1 {
+            color: var(--teal-deep);
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .content-header p {
+            color: var(--foreground);
+            opacity: 0.8;
+        }
+        
+        .process-details {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            min-height: 400px;
+        }
+        
+        .process-title {
+            color: var(--teal-deep);
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--teal-light);
+            padding-bottom: 0.5rem;
+        }
+        
+        .process-step {
+            background: #f8fafc;
+            border-left: 4px solid var(--teal-light);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .step-title {
+            font-weight: 600;
+            color: var(--teal-deep);
+            margin-bottom: 0.5rem;
+        }
+        
+        .step-content {
+            line-height: 1.6;
+        }
+
+        .process-overview {
+            background: #f8fafc;
+            border-left: 4px solid var(--teal-light);
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            font-style: italic;
+            color: #4a5568;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .process-section {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            background: var(--teal-deep);
+            color: white;
+            padding: 12px 20px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .section-overview {
+            background: #f0f9ff;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-process {
+            padding: 15px 20px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            color: var(--foreground);
+            opacity: 0.7;
+            font-size: 1.1rem;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 50vh;
+            }
+            
+            .content-area {
+                width: 100%;
+            }
+            
+            .banner-content {
+                font-size: 16px;
+            }
+            
+            .content-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .sidebar {
+                max-height: 40vh;
+            }
+            
+            .content-header {
+                padding: 1rem;
+            }
+            
+            .process-details {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Bannière roulante -->
+    <div class="rolling-banner">
+        <div class="banner-content">
+            <div class="banner-text">
+                🌟 MISE A JOUR PROCESSUS 🌟 Un remboursement Wafacash est dorénavant valable 3 mois (90 jours). Merci de le prendre en considération lors des remontées niveau 2. 🌟
+            </div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Sidebar avec arborescence -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🗂️ Processus Marjanemall</h2>
+            </div>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Rechercher un processus..." id="searchInput" onkeyup="searchKnowledge()">
+            </div>
+            
+            <div class="tree-container" id="treeContainer">
+                <!-- L'arborescence sera générée ici par JavaScript -->
+            </div>
+        </div>
+
+        <!-- Zone de contenu principale -->
+        <div class="content-area">
+            <div class="content-header">
+                <h1>Base de Connaissances Marjanemall</h1>
+                <p>Système Expert de Support Client - Powered by Intelcia</p>
+            </div>
+            
+            <div class="process-details" id="processDetails">
+                <div class="content-header">
+                <h2>LES RÈGLES GÉNÉRALES DE TRAITEMENT</h2>
+                <p>* Afin d’assurer le bon traitement des demandes client en respectant l’ensemble des process CDO et une Gestion des Relations client fluide, l’agent - Conseiller client est tenu à la base de respecter l’ensemble des règles dites les normes générales de traitement marjanemall. </p>                
+                <p>* Il faut faire la différence entre le canal adopté par le client lors de la création de sa demande : Un ticket RS, un mail ou un appel téléphonique. </p>                
+                <p>* Après avoir assigné le ticket à lui en cliquant sur “Me l’affecter” et lire attentivement le dossier client, l’agent est tenu d'identifier la demande client afin de mieux apporter la bonne réponse. </p>                
+                <p>* L’agent est tenu aussi de personnaliser le client via son nom afin de créer une valeur ajoutée lors de la communication. </p>                
+                <p>* En termes d’historisation, l’agent est tenu d’historiser son traitement, permettant à l'agent suivant d’enchainer le traitement direct de la demande client.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Données de l'arborescence Marjanemall complète
+        const knowledgeBase = {
+            "Annulation de la commande": {
+                "Expédiée": {
+                    "Refus de livraison": {
+                        title: "Refus de livraison",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes, sous réserve que celles-ci n'aient pas encore été expédiées.\\n\\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\\n\\nIl est à noter qu’à la base, il est impossible d’annuler une commande expédiée. Pour cela, le CRC propose au client de bien refuser la livraison alors que le livreur l'a contacté pour la livraison. Dans ce cas, on fait distinction entre deux cas de figures de livraison :\n\n",
+                        sections: [
+                            {
+                                title: "Annulation d'une commande livrée à Domicile",
+                                process: "La livraison à domicile : Dans ce cas, le livreur, lors de l’expédition de la commande contacte le client afin de lui fixer la livraison et son heure de passage. Le client peut demander l’annulation de sa commande. De la part du livreur, il est tenu de traiter la demande client et qualifié le cas comme un échec de livraison suite à la demande client.\n\n\n",
+                                escalade: ""
+                            },
+                            {
+                                title: "Annulation d'une commande livrée via AMANA",
+                                process: "La livraison assurée via AMANA : Dans ce cas, le client est tenu de ne pas se présenter chez l’Agence AMANA dans laquelle sa commande est mise à sa disposition pour le retrait.\n\nNoter bien que le conseiller est tenu de vérifier via le fiche des zones de livraison s’il s’agit d’une livraison à domicile ou bien via AMANA https://script.google.com/a/macros/intelcia.com/s/AKfycbyIsebC6zgYOVwlJS8XHJsscBFDxhmOR1ONJNej71TDs_JKoRoWaCANxRo2yAcgksW83Q/exec.\n",
+                                escalade: ""
+                            },
+                            {
+                                title: "Traitement GRC de la demande client",
+                                process: "En ce qui concerne le traitement CRC, le conseiller est tenu à traiter la demande client conformément à ce qui suit :\nAccueil : Le conseiller se présente et présente la cellule Marjanemall\nSécurisation : Conformément à la demande CDO, lorsqu'il s’agit d’une demande d’annulation de la commande, l’agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d’annulation.\nTraitement de la demande : Le conseiller est tenu d’informer le client que nous n’avons pas la capacité de bien annuler sa commande. Il est tenu aussi de demander au client de bien refuser sa livraison. A titre d’information, si le client insiste, le conseiller est tenu de bien remonter le cas au Log. Niv2/Transport local en demandant de bien qualifier la commande à la base comme échec de livraison et ne pas contacter le client.\nIl faut bien évidemment signaler que le conseiller est tenu par obligation de bien notifier au moins le client via un Mail ou un AS avant de clôturer le ticket.\n\n",
+                                escalade: ""
+                            }
+                        ]
+                    }
+                },
+                "Non expédiée": {
+                    "Annulation Client": {
+                        title: "Annulation Client",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes, sous réserve que celles-ci n'aient pas encore été expédiées.\\n\\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\\n\\nIl faut au préalable faire distinction entre deux cas :",
+                        sections: [
+                            {
+                                title: "Annulation via RS, Mail, MobileSDK ou AE",
+                                process: "Une annulation de la part du client via les RS, Mail, MobileSDK ou AE : Il s'agit dans ce cas d'une manifestation client afin de demander l'annulation de sa commande. Ceci est un traitement nécessitant une interaction avec le client et par la suite procéder à l'annulation.",
+                                overview: "1. Accueil : Le conseiller se présente et présente la cellule MarjaneMall\\n\\n2. Sécurisation : Conformément à la demande CDO, lorsqu'elle s'agit d'une demande d'annulation de la commande, l'agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d'annulation.\\n\\n3. Traitement de la demande : Le conseiller est tenu de confirmer la prise en compte de l'annulation, rassurer le client et l'informer du processus de remboursement."
+                            },
+                            {
+                                title: "Annulation via espace client",
+                                process: "Une annulation via son espace client : Lors qu'il s'agit d'une annulation client via son espace client, il s'est traité comme un ticket API nommé. Dans ce cas, il s'agit purement d'un traitement BACK OFFICE. C'est à dire le traitement n'entraine aucune interaction avec le client.",
+                                overview: "1. Remplissage Zendesk : L'agent est tenu à remplir les informations nécessaires sur Zendesk :\\n   - Choisir API comme Canal de réception\\n   - Choisir DEMANDE d'ANNULATION comme Catégorie\\n   - Assigner le NUMÉRO DE LA COMMANDE OBJET D'ANNULATION\\n   - Choisir ANNULATION CLIENT comme qualification\\n\\n2. Suppression commande SCALE : Demander la suppression de la commande sur SCALE s'il s'agit d'une commande FFM"
+                            }
+                        ]
+                    },
+                    "Annulation Système": {
+                        process: "1. Identifier la cause de l'annulation système\\n2. Vérifier les stocks et disponibilité produits\\n3. Contacter le client pour l'informer\\n4. Proposer des alternatives si disponibles\\n5. Procéder au remboursement automatique"
+                    },
+                    "Annulation Vendeur": {
+                        process: "1. Contacter le vendeur pour comprendre les raisons\\n2. Informer immédiatement le client\\n3. Proposer des produits similaires\\n4. Initier le remboursement si aucune alternative\\n5. Escalader si récurrence du vendeur"
+                    },
+                    "Fraude": {
+                        process: "1. Bloquer immédiatement la commande\\n2. Vérifier les informations de paiement\\n3. Contacter le service sécurité\\n4. Documenter tous les éléments suspects\\n5. Appliquer les procédures anti-fraude"
+                    }
+                }
+            },
+            "Confirmation de la commande": {
+                "Annulée": {
+                    "Commande rejetée": {
+                        process: "1. Identifier la raison du rejet\\n2. Vérifier les informations de paiement\\n3. Contacter le client pour clarification\\n4. Corriger les informations si possible\\n5. Relancer la validation ou confirmer l'annulation"
+                    },
+                    "Erreur sur la Commande": {
+                        process: "1. Analyser le type d'erreur détectée\\n2. Vérifier si correction possible\\n3. Contacter le client pour validation des modifications\\n4. Corriger et relancer la commande\\n5. Confirmer les nouvelles conditions au client"
+                    }
+                },
+                "Confirmée": {
+                    "Confirmée avec Appel": {
+                        process: "1. Programmer l'appel de confirmation\\n2. Vérifier toutes les informations commande\\n3. Confirmer les détails avec le client\\n4. Mettre à jour le statut dans le système\\n5. Envoyer la confirmation écrite"
+                    },
+                    "Confirmée sans Appel": {
+                        process: "1. Vérifier la validation automatique\\n2. Contrôler les informations de livraison\\n3. Valider le paiement\\n4. Confirmer la commande dans le système\\n5. Envoyer la notification de confirmation"
+                    }
+                }
+            },
+            "Coupon": {
+                "Coupon Consommé": {
+                    process: "1. Vérifier l'historique d'utilisation du coupon\\n2. Confirmer la date et commande d'utilisation\\n3. Expliquer au client les conditions d'usage unique\\n4. Proposer d'autres offres disponibles\\n5. Documenter la demande client"
+                },
+                "Coupon Expiré": {
+                    process: "1. Vérifier la date d'expiration du coupon\\n2. Confirmer avec le client la date d'expiration\\n3. Expliquer la politique d'expiration\\n4. Vérifier s'il y a d'autres promotions actives\\n5. Proposer des alternatives actuelles"
+                },
+                "Coupon Invalide": {
+                    process: "1. Vérifier la validité du code coupon\\n2. Contrôler les conditions d'éligibilité\\n3. Vérifier les produits concernés par le coupon\\n4. Expliquer les conditions d'utilisation\\n5. Proposer des coupons valides si disponibles"
+                }
+            },
+            "Demande de Retour": {
+                "Process de retour": {
+                    process: "1. Vérifier l'éligibilité du produit au retour\\n2. Contrôler les délais de retour (14 jours)\\n3. Expliquer la procédure de retour au client\\n4. Générer l'étiquette de retour\\n5. Programmer la collecte du produit"
+                },
+                "Accessoire Manquant": {
+                    process: "1. Identifier l'accessoire manquant\\n2. Vérifier le contenu standard du produit\\n3. Contacter le fournisseur/vendeur\\n4. Organiser l'envoi de l'accessoire manquant\\n5. Offrir un geste commercial si délai important"
+                },
+                "Erreur de Référence": {
+                    process: "1. Comparer la commande avec le produit reçu\\n2. Identifier l'origine de l'erreur\\n3. Organiser la récupération du mauvais produit\\n4. Expédier le bon produit immédiatement\\n5. Offrir un geste commercial pour le désagrément"
+                },
+                "Panne au Déballage": {
+                    process: "1. Documenter la panne constatée\\n2. Vérifier si c'est un défaut de fabrication\\n3. Prendre des photos si nécessaire\\n4. Contacter le service technique/fournisseur\\n5. Proposer remplacement ou remboursement"
+                },
+                "Produit Abîmé": {
+                    process: "1. Évaluer l'état du produit (photos)\\n2. Déterminer si dommage lié au transport\\n3. Contacter le transporteur si nécessaire\\n4. Proposer échange ou remboursement\\n5. Organiser la collecte du produit abîmé"
+                },
+                "Rétractation": {
+                    "Produit Éligible": {
+                        process: "1. Confirmer l'éligibilité au droit de rétractation\\n2. Vérifier les délais (14 jours)\\n3. Expliquer les conditions de retour\\n4. Générer l'étiquette de retour gratuite\\n5. Initier le processus de remboursement"
+                    },
+                    "Produit non Éligible": {
+                        process: "1. Expliquer pourquoi le produit n'est pas éligible\\n2. Référencer les conditions générales\\n3. Proposer des alternatives (garantie, SAV)\\n4. Documenter la demande\\n5. Escalader si contestation du client"
+                    }
+                }
+            },
+            "Demande SAV": {
+                "Autre": {
+                    process: "1. Écouter et analyser la demande spécifique\\n2. Identifier la nature du problème\\n3. Vérifier les conditions de garantie\\n4. Orienter vers le service approprié\\n5. Assurer le suivi de la demande"
+                },
+                "Hors Garantie": {
+                    process: "1. Vérifier la date d'achat et fin de garantie\\n2. Expliquer les limitations hors garantie\\n3. Proposer une réparation payante si possible\\n4. Informer sur les tarifs de réparation\\n5. Documenter la décision du client"
+                },
+                "Prise en Charge": {
+                    process: "1. Valider l'éligibilité à la prise en charge\\n2. Organiser la collecte du produit\\n3. Transmettre au service technique\\n4. Informer le client des délais\\n5. Assurer le suivi régulier"
+                },
+                "Refus de Prise en Charge": {
+                    process: "1. Expliquer les raisons du refus\\n2. Référencer les conditions de garantie\\n3. Proposer des alternatives (réparation payante)\\n4. Documenter la justification\\n5. Escalader si contestation fondée"
+                },
+                "Retard de Prise en Charge": {
+                    process: "1. Identifier les causes du retard\\n2. Contacter le service technique\\n3. Donner un nouveau délai réaliste\\n4. Offrir un geste commercial\\n5. Assurer un suivi prioritaire"
+                }
+            },
+            "Informations": {
+                "Informations Compte Client": {
+                    process: "1. Vérifier l'identité du client\\n2. Accéder aux informations compte\\n3. Répondre aux questions spécifiques\\n4. Proposer les modifications nécessaires\\n5. Confirmer les changements effectués"
+                },
+                "Informations Marketplace": {
+                    process: "1. Identifier la question sur le marketplace\\n2. Expliquer le fonctionnement des vendeurs\\n3. Orienter vers les politiques appropriées\\n4. Donner les contacts vendeurs si nécessaire\\n5. Assurer le suivi si problème complexe"
+                },
+                "Informations Coupon": {
+                    process: "1. Vérifier les coupons disponibles\\n2. Expliquer les conditions d'utilisation\\n3. Aider à l'application du coupon\\n4. Résoudre les problèmes techniques\\n5. Proposer des alternatives si nécessaire"
+                },
+                "Informations sur nos Offres": {
+                    process: "1. Identifier le type d'offre demandée\\n2. Présenter les offres actuelles\\n3. Expliquer les conditions de chaque offre\\n4. Aider à l'inscription si nécessaire\\n5. Orienter vers les supports marketing"
+                },
+                "Informations sur non Produits": {
+                    process: "1. Identifier le produit recherché\\n2. Vérifier la disponibilité future\\n3. Proposer des produits similaires\\n4. Expliquer les délais de réapprovisionnement\\n5. Proposer d'être notifié lors de la disponibilité"
+                },
+                "Nos délais de Livraison": {
+                    process: "1. Identifier la zone de livraison\\n2. Présenter les délais selon le type de produit\\n3. Expliquer les options de livraison\\n4. Informer sur les délais spéciaux (week-end, fêtes)\\n5. Donner les coordonnées pour le suivi"
+                },
+                "Nos Modalités de Paiement": {
+                    process: "1. Présenter tous les modes de paiement\\n2. Expliquer les conditions de chaque mode\\n3. Aider à résoudre les problèmes de paiement\\n4. Expliquer la sécurité des paiements\\n5. Orienter vers l'assistance technique si nécessaire"
+                }
+            },
+            "Livraison": {
+                "Changement de Coordonnées": {
+                    process: "1. Vérifier si la modification est possible\\n2. Contrôler les nouvelles coordonnées\\n3. Mettre à jour dans le système\\n4. Informer le transporteur si nécessaire\\n5. Confirmer les changements au client"
+                },
+                "Livraison dans la Promesse": {
+                    process: "1. Confirmer les délais respectés\\n2. Vérifier la satisfaction client\\n3. S'assurer de l'état du produit\\n4. Demander un feedback sur la livraison\\n5. Noter les points positifs pour l'équipe"
+                },
+                "Livraison hors la Promesse": {
+                    process: "1. Identifier les causes du retard\\n2. S'excuser auprès du client\\n3. Proposer un geste commercial\\n4. Donner un nouveau délai réaliste\\n5. Assurer un suivi prioritaire"
+                },
+                "Comportement Livreur": {
+                    process: "1. Écouter attentivement la plainte\\n2. Documenter précisément les faits\\n3. S'excuser au nom de l'entreprise\\n4. Transmettre au responsable transport\\n5. Assurer le suivi des actions correctives"
+                },
+                "Réclamation Livraison": {
+                    process: "1. Analyser la nature de la réclamation\\n2. Vérifier les informations de livraison\\n3. Contacter le transporteur si nécessaire\\n4. Proposer une solution appropriée\\n5. Assurer le suivi jusqu'à résolution"
+                },
+                "Réclamation Livraison Amana": {
+                    process: "1. Contacter directement Amana\\n2. Transmettre les détails de la réclamation\\n3. Faire le lien entre le client et Amana\\n4. Assurer le suivi de la résolution\\n5. S'assurer de la satisfaction finale"
+                }
+            },
+            "Paiement / Remboursement": {
+                "Facture": {
+                    "Demande de Facture": {
+                        process: "1. Vérifier les informations de commande\\n2. Générer la facture dans le système\\n3. Vérifier les informations fiscales\\n4. Envoyer la facture par email\\n5. Confirmer la réception avec le client"
+                    },
+                    "Facture Érronée": {
+                        process: "1. Identifier les erreurs sur la facture\\n2. Vérifier les bonnes informations\\n3. Corriger et régénérer la facture\\n4. Annuler l'ancienne facture si nécessaire\\n5. Envoyer la facture corrigée"
+                    },
+                    "Facture Indisponible": {
+                        process: "1. Vérifier les raisons de l'indisponibilité\\n2. Contrôler le statut de la commande\\n3. Expliquer les délais de génération\\n4. Programmer l'envoi dès disponibilité\\n5. Proposer une attestation temporaire"
+                    },
+                    "Preuve d'Achat": {
+                        process: "1. Vérifier l'historique de commande\\n2. Générer l'attestation d'achat\\n3. Inclure tous les détails nécessaires\\n4. Envoyer par email sécurisé\\n5. Confirmer la réception"
+                    }
+                },
+                "Problème de Paiement": {
+                    process: "1. Identifier le type de problème de paiement\\n2. Vérifier les informations bancaires\\n3. Contacter le service paiement\\n4. Proposer des alternatives de paiement\\n5. Assurer le suivi jusqu'à résolution"
+                },
+                "Remboursement": {
+                    "Code WAFACASH Erronné": {
+                        process: "1. Vérifier le code WAFACASH généré\\n2. Identifier l'erreur dans le système\\n3. Corriger et générer un nouveau code\\n4. Annuler l'ancien code si nécessaire\\n5. Envoyer le code correct au client"
+                    },
+                    "Code WAFACASH non Reçu ou Expiré": {
+                        process: "1. Vérifier le statut du code dans le système\\n2. Contrôler la date d'expiration (90 jours)\\n3. Régénérer un nouveau code si expiré\\n4. Renvoyer par SMS et email\\n5. Confirmer la réception avec le client"
+                    },
+                    "Demande de Modification du Bénéficiaire": {
+                        process: "1. Vérifier l'identité du demandeur\\n2. Contrôler les raisons de la modification\\n3. Valider les nouvelles informations\\n4. Générer un nouveau code au bon nom\\n5. Annuler l'ancien code"
+                    },
+                    "Nom Client WAFACASH Erronné ou Incomplet": {
+                        process: "1. Identifier l'erreur dans le nom\\n2. Vérifier les bonnes informations client\\n3. Corriger dans le système\\n4. Régénérer le code avec le bon nom\\n5. Informer le client des corrections"
+                    },
+                    "Remboursement CB non Reçu": {
+                        process: "1. Vérifier le statut du remboursement\\n2. Contrôler les délais bancaires (3-5 jours)\\n3. Contacter la banque si délai dépassé\\n4. Fournir les justificatifs au client\\n5. Assurer le suivi jusqu'à crédit effectif"
+                    }
+                }
+            },
+            "Réclamation": {
+                "Autre": {
+                    process: "1. Écouter attentivement la réclamation\\n2. Analyser et catégoriser le problème\\n3. Rechercher une solution appropriée\\n4. Proposer des actions correctives\\n5. Assurer le suivi complet"
+                },
+                "Produit Manquant": {
+                    process: "1. Vérifier le contenu de la commande livrée\\n2. Identifier le/les produits manquants\\n3. Contrôler avec le transporteur\\n4. Organiser l'envoi du produit manquant\\n5. Offrir un geste commercial pour le désagrément"
+                },
+                "Produit non Reçu": {
+                    process: "1. Vérifier le statut de livraison\\n2. Contacter le transporteur pour enquête\\n3. Localiser le colis si possible\\n4. Proposer un renvoi ou remboursement\\n5. Assurer un suivi prioritaire"
+                },
+                "Produit Reçu en Double": {
+                    process: "1. Vérifier s'il s'agit d'une erreur système\\n2. Contrôler les charges sur le compte client\\n3. Organiser la collecte du produit en trop\\n4. Ajuster la facturation si nécessaire\\n5. S'excuser pour l'erreur"
+                }
+            },
+            "SPAM / Test / Plaisantin": {
+                process: "1. Identifier la nature non-légitime de la demande\\n2. Ne pas engager de conversation prolongée\\n3. Documenter le contact dans le système\\n4. Appliquer les mesures de protection\\n5. Signaler si récurrence du comportement"
+            }
+        };
+
+        // Initialisation au chargement de la page
+        document.addEventListener('DOMContentLoaded', function() {
+            generateKnowledgeTree();
+        });
+
+        // Fonction de recherche
+        function searchKnowledge() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.process-item, .subcategory-header, .category-header');
+            
+            items.forEach(item => {
+                const text = item.textContent.toLowerCase();
+                const matches = text.includes(searchTerm);
+                item.style.display = matches || searchTerm === '' ? 'flex' : 'none';
+                
+                if (matches && searchTerm !== '') {
+                    let parent = item.closest('.subcategories');
+                    if (parent) {
+                        parent.classList.add('expanded');
+                        parent.previousElementSibling.classList.add('expanded');
+                    }
+                    parent = item.closest('.tree-category');
+                    if (parent) {
+                        parent.querySelector('.subcategories').classList.add('expanded');
+                        parent.querySelector('.category-header').classList.add('expanded');
+                    }
+                }
+            });
+        }
+
+        // Génération de l'arborescence
+        function generateKnowledgeTree() {
+            const container = document.getElementById('treeContainer');
+            container.innerHTML = '';
+
+            Object.keys(knowledgeBase).forEach(category => {
+                const categoryDiv = createCategoryElement(category, knowledgeBase[category]);
+                container.appendChild(categoryDiv);
+            });
+        }
+
+        function createCategoryElement(categoryName, categoryData) {
+            const categoryDiv = document.createElement('div');
+            categoryDiv.className = 'tree-category';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'category-header';
+            headerDiv.innerHTML = `
+                <span>${categoryName}</span>
+                <span class="category-arrow">►</span>
+            `;
+            
+            headerDiv.addEventListener('click', () => toggleCategory(headerDiv));
+            
+            const subcategoriesDiv = document.createElement('div');
+            subcategoriesDiv.className = 'subcategories';
+
+            Object.keys(categoryData).forEach(key => {
+                if (categoryData[key].process) {
+                    const processItem = createProcessElement(key, categoryData[key].process);
+                    subcategoriesDiv.appendChild(processItem);
+                } else {
+                    const subcategoryElement = createSubcategoryElement(key, categoryData[key]);
+                    subcategoriesDiv.appendChild(subcategoryElement);
+                }
+            });
+
+            categoryDiv.appendChild(headerDiv);
+            categoryDiv.appendChild(subcategoriesDiv);
+            
+            return categoryDiv;
+        }
+
+        function createSubcategoryElement(subcategoryName, subcategoryData) {
+            const subcategoryDiv = document.createElement('div');
+            subcategoryDiv.className = 'subcategory';
+
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'subcategory-header';
+            headerDiv.innerHTML = `
+                <span>${subcategoryName}</span>
+                <span class="category-arrow">►</span>
+            `;
+            
+            headerDiv.addEventListener('click', () => toggleSubcategory(headerDiv));
+            
+            const processesDiv = document.createElement('div');
+            processesDiv.className = 'processes';
+
+            Object.keys(subcategoryData).forEach(processName => {
+                const processData = subcategoryData[processName];
+                const processItem = createProcessElement(processName, processData);
+                processesDiv.appendChild(processItem);
+            });
+
+            subcategoryDiv.appendChild(headerDiv);
+            subcategoryDiv.appendChild(processesDiv);
+            
+            return subcategoryDiv;
+        }
+
+        function createProcessElement(processName, processData) {
+            const processDiv = document.createElement('div');
+            processDiv.className = 'process-item';
+            processDiv.textContent = processName;
+            processDiv.addEventListener('click', () => showProcessDetails(processName, processData));
+            return processDiv;
+        }
+
+        function toggleCategory(header) {
+            const subcategories = header.nextElementSibling;
+            const arrow = header.querySelector('.category-arrow');
+            
+            header.classList.toggle('expanded');
+            subcategories.classList.toggle('expanded');
+            arrow.style.transform = header.classList.contains('expanded') ? 'rotate(90deg)' : 'rotate(0deg)';
+        }
+
+        function toggleSubcategory(header) {
+            const processes = header.nextElementSibling;
+            const arrow = header.querySelector('.category-arrow');
+            
+            header.classList.toggle('expanded');
+            processes.classList.toggle('expanded');
+            arrow.style.transform = header.classList.contains('expanded') ? 'rotate(90deg)' : 'rotate(0deg)';
+        }
+
+        function showProcessDetails(processName, processData) {
+            document.querySelectorAll('.process-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            event.target.classList.add('active');
+            
+            const detailsContainer = document.getElementById('processDetails');
+            
+            // Gérer les anciens formats (simple process string) et nouveaux formats (avec sections)
+            if (typeof processData === 'string') {
+                // Format simple ancien
+                detailsContainer.innerHTML = `
+                    <div class="process-title">${processName}</div>
+                    <div class="process-step">
+                        <div class="step-title">Processus à suivre :</div>
+                        <div class="step-content">${processData.replace(/\\n/g, '<br>')}</div>
+                    </div>
+                `;
+            } else if (processData.sections) {
+                // Nouveau format avec sections détaillées
+                let sectionsHTML = '';
+                
+                processData.sections.forEach(section => {
+                    sectionsHTML += `
+                        <div class="process-section">
+                            <div class="section-title">${section.title}</div>
+                            <div class="section-process">
+                                <div class="step-title">Description :</div>
+                                <div class="step-content">${section.process.replace(/\\n/g, '<br>')}</div>
+                            </div>
+                            <div class="section-process">
+                                <div class="step-title">Process à suivre :</div>
+                                <div class="section-overview">${section.overview.replace(/\\n/g, '<br>')}</div> 
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                detailsContainer.innerHTML = `
+                    <div class="process-title">${processData.title || processName}</div>
+                    <div class="process-overview">${processData.overview.replace(/\\n/g, '<br>')}</div>
+                    ${sectionsHTML}
+                `;
+            } else {
+                // Format avec process simple mais dans un objet
+                const content = processData.process || processData;
+                detailsContainer.innerHTML = `
+                    <div class="process-title">${processName}</div>
+                    <div class="process-step">
+                        <div class="step-title">Processus à suivre :</div>
+                        <div class="step-content">${content.replace(/\\n/g, '<br>')}</div>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marjanemall - Générateur de Messages</title>
+  <?!= include('Styles'); ?>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo-container">
+        <img src="https://www.marjanemall.ma/media/logo/stores/1/logo.png" alt="Marjanemall Logo" class="logo">
+        <h1>Générateur de Messages</h1>
+      </div>
+    </header>
+
+    <main>
+      <div class="card">
+        <div class="card-header">
+          <h2>Sélectionner un modèle</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="categorie">Catégorie :</label>
+            <select id="categorie" class="form-control">
+              <option value="">-- Sélectionner une catégorie --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="modele">Modèle :</label>
+            <select id="modele" class="form-control" disabled>
+              <option value="">-- Sélectionner un modèle --</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="langue">Langue :</label>
+            <select id="langue" class="form-control" disabled>
+              <option value="">-- Choisir la langue --</option>
+              <option value="fr">Français</option>
+              <option value="ar">العربية</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" id="dynamicFieldsCard" style="display: none;">
+        <div class="card-header">
+          <h2>Personnaliser le message</h2>
+        </div>
+        <div class="card-body">
+          <div id="dynamicFields"></div>
+        </div>
+      </div>
+
+      <div class="card" id="messagePreviewCard" style="display: none;">
+        <div class="card-header">
+          <h2>Aperçu du message</h2>
+        </div>
+        <div class="card-body">
+          <div class="message-preview">
+            <div id="messagePreview" class="preview-text"></div>
+          </div>
+          <div class="button-group">
+            <button id="copyBtn" class="btn btn-primary">Copier le message</button>
+            <button id="resetBtn" class="btn btn-secondary">Réinitialiser</button>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <div id="notification" class="notification">
+      <span id="notificationText"></span>
+    </div>
+
+    <footer>
+      <p>&copy; <span id="currentYear"></span> Version 5.42 - Générateur de Messages</p>
+    </footer>
+  </div>
+
+  <div id="loadingOverlay" class="loading-overlay">
+    <div class="spinner"></div>
+    <p>Chargement des modèles...</p>
+  </div>
+
+  <?!= include('Scripts'); ?>
+</body>
+</html>

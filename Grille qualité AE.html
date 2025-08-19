@@ -1,0 +1,1613 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grilles Qualité AS & AE - Marjanemall</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-deep: #006E6A;
+            --teal-light: #00B8A9;
+            --neutral-bg: #F5F5F5;
+            --neutral-border: #E0E0E0;
+            --background: #ffffff;
+            --foreground: #1f2937;
+            --border: #e5e7eb;
+            --orange: #FF6B35;
+            --orange-light: #FF8A65;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+        }
+        
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--foreground);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            background: linear-gradient(45deg, var(--teal-deep), var(--teal-light));
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* Navigation */
+        .nav-container {
+            background: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav-tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            padding: 0 2rem;
+        }
+        
+        .nav-tab {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            color: var(--foreground);
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .nav-tab:hover {
+            background: var(--teal-light);
+            color: white;
+            border-color: var(--teal-light);
+            transform: translateY(-2px);
+        }
+        
+        .nav-tab.active {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+        
+        /* Main container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        .grid-container {
+            display: none;
+        }
+        
+        .grid-container.active {
+            display: block;
+        }
+        
+        /* Grid styles */
+        .quality-grid {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        
+        .grid-intro {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid var(--teal-light);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .grid-intro h2 {
+            color: var(--teal-deep);
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .grid-intro p {
+            font-size: 1.1rem;
+            color: var(--foreground);
+            opacity: 0.8;
+        }
+        
+        .criteria-section {
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+        }
+        
+        .criteria-title {
+            background: var(--orange);
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .weight-badge {
+            background: rgba(255,255,255,0.2);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .criteria-content {
+            background: white;
+            border: 1px solid var(--border);
+            border-top: none;
+        }
+        
+        .criterion {
+            border-bottom: 1px solid var(--border);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .criterion:last-child {
+            border-bottom: none;
+        }
+        
+        .criterion:hover {
+            background: #f8fafc;
+        }
+        
+        .criterion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            gap: 1rem;
+        }
+        
+        .criterion-name {
+            font-weight: 600;
+            color: var(--teal-deep);
+            font-size: 1.2rem;
+            flex: 1;
+        }
+        
+        .criterion-score {
+            background: var(--teal-light);
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 1rem;
+            white-space: nowrap;
+        }
+        
+        .criterion-description {
+            color: var(--foreground);
+            margin-bottom: 1.5rem;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+        
+        .scoring-levels {
+            background: #f0f9ff;
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 4px solid var(--teal-light);
+        }
+        
+        .scoring-level {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .scoring-level:last-child {
+            border-bottom: none;
+        }
+        
+        .level-description {
+            font-weight: 500;
+            color: var(--foreground);
+            flex: 1;
+        }
+        
+        .level-score {
+            font-weight: 700;
+            color: var(--teal-deep);
+            font-size: 1.1rem;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .total-score-section {
+            background: linear-gradient(135deg, var(--teal-deep), var(--teal-light));
+            color: white;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+        
+        .total-score {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .score-label {
+            font-size: 1.4rem;
+            opacity: 0.9;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .nav-tab {
+                width: 100%;
+                max-width: 300px;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .quality-grid {
+                padding: 1rem;
+            }
+            
+            .criterion-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .total-score {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Grilles Qualité Marjanemall</h1>
+        <p>Évaluation de la qualité de prestations des Conseillers Clients marjanemall</p>
+    </div>
+
+    <div class="container">
+        <!-- AS - Appels Entrants -->
+        <div id="as-appels" class="grid-container active">
+            <div class="quality-grid">
+                <div class="grid-intro">
+                    <h2>Agent de Support - Appels Entrants</h2>
+                    <p>Grille d'évaluation pour la qualité du traitement des appels clients</p>
+                </div>
+
+                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Acceuil et Présentation
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Identification client 
+                        <div class="weight-badge">35 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Exactitude des informations</div>
+                                <div class="criterion-score">15 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Les informations fournies sont correctes et précises
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Informations 100% exactes</div>
+                                    <div class="level-score">15</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Informations largement exactes</div>
+                                    <div class="level-score">12</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Quelques inexactitudes mineures</div>
+                                    <div class="level-score">8</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Informations erronées</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Utilisation des outils</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Maîtrise des systèmes et outils de travail (CRM, base de connaissances, etc.)
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Utilisation experte des outils</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne utilisation</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Utilisation basique</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Difficultés avec les outils</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Respect des procédures</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Application correcte des processus établis et des protocoles de service
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Respect parfait des procédures</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Respect général des procédures</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Quelques écarts mineurs</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Non-respect des procédures</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Reformulation de la demande / Questionnement / Ecoute 
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Qualité de l'expression</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Clarté, articulation et niveau de langue approprié
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Expression excellente</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne expression</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Expression correcte</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Expression défaillante</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Empathie et écoute</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Capacité à comprendre et rassurer le client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Empathie exceptionnelle</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne empathie</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Empathie basique</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Manque d'empathie</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Gestion des objections</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Traitement approprié des contestations ou mécontentements
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Gestion excellente des objections</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Gestion correcte</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Gestion perfectible</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Gestion défaillante</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Gestion de MEA
+                        <div class="weight-badge">15 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Synthèse de l'échange</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Récapitulatif clair des actions entreprises et des solutions apportées
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Synthèse complète et claire</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Synthèse correcte</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Synthèse partielle</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de synthèse</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Information sur les prochaines étapes</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Communication claire sur la suite du processus et les délais
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Information complète et précise</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Information suffisante</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Information partielle</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune information</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Formule de politesse finale</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Clôture professionnelle de l'échange avec courtoisie
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Clôture excellente</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Clôture correcte</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Clôture basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Clôture inappropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Ecoute
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Posture vis-à-vis du client / Qualité de discours 
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Conclusion / Synthèse finale
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Prise de congé
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Réponse apportée 
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Valorisation des services Marjane Mall 
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                <div class="criteria-section">
+                    <div class="criteria-title">
+                        Historisation
+                        <div class="weight-badge">25 points</div>
+                    </div>
+                    <div class="criteria-content">
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Salutation et présentation</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent se présente clairement avec nom, entreprise et formule de politesse appropriée
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation complète et professionnelle</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation correcte mais incomplète</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Salutation basique</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Pas de salutation appropriée</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Identification du client</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Processus de vérification de l'identité client respecté selon les protocoles de sécurité
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification complète et sécurisée</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification partielle</div>
+                                    <div class="level-score">3</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Vérification insuffisante</div>
+                                    <div class="level-score">1</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Aucune vérification</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Compréhension de la demande</div>
+                                <div class="criterion-score">10 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                L'agent comprend et reformule correctement la demande du client
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension parfaite avec reformulation</div>
+                                    <div class="level-score">10</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Bonne compréhension</div>
+                                    <div class="level-score">7</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Compréhension partielle</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Incompréhension de la demande</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="criterion">
+                            <div class="criterion-header">
+                                <div class="criterion-name">Temps de prise en charge</div>
+                                <div class="criterion-score">5 pts</div>
+                            </div>
+                            <div class="criterion-description">
+                                Rapidité de réponse et d'engagement dans la résolution du problème
+                            </div>
+                            <div class="scoring-levels">
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge immédiate</div>
+                                    <div class="level-score">5</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge rapide</div>
+                                    <div class="level-score">4</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge acceptable</div>
+                                    <div class="level-score">2</div>
+                                </div>
+                                <div class="scoring-level">
+                                    <div class="level-description">Prise en charge trop lente</div>
+                                    <div class="level-score">0</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="total-score-section">
+                    <div class="total-score">100</div>
+                    <div class="score-label">Points Maximum</div>
+                </div>
+            </div>
+        </div>
+
+    <script>
+        function showGrid(gridId) {
+            // Hide all grids
+            const grids = document.querySelectorAll('.grid-container');
+            grids.forEach(grid => grid.classList.remove('active'));
+            
+            // Remove active from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected grid
+            document.getElementById(gridId).classList.add('active');
+            
+            // Add active to clicked tab
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Add hover effects and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate score on page load
+            const scoreElements = document.querySelectorAll('.total-score');
+            scoreElements.forEach(score => {
+                let currentValue = 0;
+                const targetValue = parseInt(score.textContent);
+                const increment = targetValue / 50;
+                
+                const timer = setInterval(() => {
+                    currentValue += increment;
+                    if (currentValue >= targetValue) {
+                        currentValue = targetValue;
+                        clearInterval(timer);
+                    }
+                    score.textContent = Math.floor(currentValue);
+                }, 20);
+            });
+        });
+    </script>
+</body>
+</html>

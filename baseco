@@ -1,0 +1,260 @@
+        const knowledgeBase = {
+            "Annulation de la commande": {
+                "Expédiée": {
+                    "Refus de livraison": {
+                        title: "Refus de livraison",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes, sous réserve que celles-ci n'aient pas encore été expédiées.\\n\\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\\n\\nIl est à noter qu’à la base, il est impossible d’annuler une commande expédiée. Pour cela, le CRC propose au client de bien refuser la livraison alors que le livreur l'a contacté pour la livraison. Dans ce cas, on fait distinction entre deux cas de figures de livraison :\n\n",
+                        sections: [
+                            {
+                                title: "Annulation d'une commande livrée à Domicile",
+                                process: "La livraison à domicile : Dans ce cas, le livreur, lors de l’expédition de la commande contacte le client afin de lui fixer la livraison et son heure de passage. Le client peut demander l’annulation de sa commande. De la part du livreur, il est tenu de traiter la demande client et qualifié le cas comme un échec de livraison suite à la demande client.\n\n\n",
+                                escalade: "Remontée en >> PAUSE << au Log. Niv2 - Transport local en demandant de bien qualifier la commande à la base comme échec de livraison."
+                            },
+                            {
+                                title: "Annulation d'une commande livrée via AMANA",
+                                process: "La livraison assurée via AMANA : Dans ce cas, le client est tenu de ne pas se présenter chez l’Agence AMANA dans laquelle sa commande est mise à sa disposition pour le retrait.\n\nNoter bien que le conseiller est tenu de vérifier via le fiche des zones de livraison s’il s’agit d’une livraison à domicile ou bien via AMANA https://script.google.com/a/macros/intelcia.com/s/AKfycbyIsebC6zgYOVwlJS8XHJsscBFDxhmOR1ONJNej71TDs_JKoRoWaCANxRo2yAcgksW83Q/exec.\n",
+                                escalade: ""
+                            },
+                            {
+                                title: "Traitement GRC de la demande client",
+                                process: "En ce qui concerne le traitement CRC, le conseiller est tenu à traiter la demande client conformément à ce qui suit :\nAccueil : Le conseiller se présente et présente la cellule Marjanemall\nSécurisation : Conformément à la demande CDO, lorsqu'il s’agit d’une demande d’annulation de la commande, l’agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d’annulation.\nTraitement de la demande : Le conseiller est tenu d’informer le client que nous n’avons pas la capacité de bien annuler sa commande. Il est tenu aussi de demander au client de bien refuser sa livraison. A titre d’information, si le client insiste, le conseiller est tenu de bien remonter le cas au Log. Niv2/Transport local en demandant de bien qualifier la commande à la base comme échec de livraison et ne pas contacter le client.\nIl faut bien évidemment signaler que le conseiller est tenu par obligation de bien notifier au moins le client via un Mail ou un AS avant de clôturer le ticket.\n\n",
+                                escalade: ""
+                            }
+                        ]
+                    }
+                },
+                "Non expédiée": {
+                    "Annulation Client": {
+                        title: "Annulation Client",
+                        overview: "Cette fiche a pour objectif d'assister les agents du CRC dans le traitement des demandes clients relatives à l'annulation de commandes, sous réserve que celles-ci n'aient pas encore été expédiées.\\n\\nElle présente l'ensemble des étapes à suivre par l'agent CC, le script à communiquer au client concerné, ainsi que le traitement à effectuer dans le ticket Zendesk.\\n\\nIl faut au préalable faire distinction entre deux cas :",
+                        sections: [
+                            {
+                                title: "Annulation via RS, Mail, MobileSDK ou AE",
+                                process: "Une annulation de la part du client via les RS, Mail, MobileSDK ou AE : Il s'agit dans ce cas d'une manifestation client afin de demander l'annulation de sa commande. Ceci est un traitement nécessitant une interaction avec le client et par la suite procéder à l'annulation.",
+                                overview: "1. Accueil : Le conseiller se présente et présente la cellule MarjaneMall\\n\\n2. Sécurisation : Conformément à la demande CDO, lorsqu'elle s'agit d'une demande d'annulation de la commande, l'agent est tenu à sécuriser la discussion en demandant du client son adresse mail et le numéro de la commande objet d'annulation.\\n\\n3. Traitement de la demande : Le conseiller est tenu de confirmer la prise en compte de l'annulation, rassurer le client et l'informer du processus de remboursement.",
+                                escalade: ""
+
+                            },
+                            {
+                                title: "Annulation via espace client",
+                                process: "Une annulation via son espace client : Lors qu'il s'agit d'une annulation client via son espace client, il s'est traité comme un ticket API nommé. Dans ce cas, il s'agit purement d'un traitement BACK OFFICE. C'est à dire le traitement n'entraine aucune interaction avec le client.",
+                                overview: "1. Remplissage Zendesk : L'agent est tenu à remplir les informations nécessaires sur Zendesk :\\n   - Choisir API comme Canal de réception\\n   - Choisir DEMANDE d'ANNULATION comme Catégorie\\n   - Assigner le NUMÉRO DE LA COMMANDE OBJET D'ANNULATION\\n   - Choisir ANNULATION CLIENT comme qualification\\n\\n2. Suppression commande SCALE : Demander la suppression de la commande sur SCALE s'il s'agit d'une commande FFM",
+                                escalade: "Remontée en >> PAUSE << au Log. Niv2 - Prépa Commandes en demandant la suppression de la commande via la Macro 'Demande d'annulation Scale'."
+
+                            }
+                        ]
+                    },
+                    "Annulation Système": {
+                        title: "Annulation Système",
+                        overview: "",
+                        sections: [
+                            {
+                                title: "Annulation Système",
+                                process: "",
+                                overview: "",
+                                escalade: "",
+                            }
+                        ]   
+                    },
+                    "Annulation Vendeur": {
+                        title: "Annulation Système",
+                        overview: "",
+                        sections: [
+                            {
+                                title: "Annulation Système",
+                                process: "",
+                                overview: "",
+                                escalade: "",
+                            }
+                        ] 
+                    },
+                    "Fraude": {
+                        title: "Annulation Système",
+                        overview: "",
+                        sections: [
+                            {
+                                title: "Annulation Système",
+                                process: "",
+                                overview: "",
+                                escalade: "",
+                            }
+                        ] 
+                    }
+                }
+            },
+            "Confirmation de la commande": {
+                "Annulée": {
+                    "Commande rejetée": {
+                        title: "Commande rejetée",
+                        overview: "",
+                        sections: [
+                            {
+                                title: "Commande rejetée",
+                                process: "",
+                                overview: "",
+                                escalade: "",
+                            }
+                        ] },
+                    "Erreur sur la Commande": {
+                        process: "1. Analyser le type d'erreur détectée\\n2. Vérifier si correction possible\\n3. Contacter le client pour validation des modifications\\n4. Corriger et relancer la commande\\n5. Confirmer les nouvelles conditions au client"
+                    }
+                },
+                "Confirmée": {
+                    "Confirmée avec Appel": {
+                        process: "1. Programmer l'appel de confirmation\\n2. Vérifier toutes les informations commande\\n3. Confirmer les détails avec le client\\n4. Mettre à jour le statut dans le système\\n5. Envoyer la confirmation écrite"
+                    },
+                    "Confirmée sans Appel": {
+                        process: "1. Vérifier la validation automatique\\n2. Contrôler les informations de livraison\\n3. Valider le paiement\\n4. Confirmer la commande dans le système\\n5. Envoyer la notification de confirmation"
+                    }
+                }
+            },
+            "Coupon": {
+                "Coupon Consommé": {
+                    process: "1. Vérifier l'historique d'utilisation du coupon\\n2. Confirmer la date et commande d'utilisation\\n3. Expliquer au client les conditions d'usage unique\\n4. Proposer d'autres offres disponibles\\n5. Documenter la demande client"
+                },
+                "Coupon Expiré": {
+                    process: "1. Vérifier la date d'expiration du coupon\\n2. Confirmer avec le client la date d'expiration\\n3. Expliquer la politique d'expiration\\n4. Vérifier s'il y a d'autres promotions actives\\n5. Proposer des alternatives actuelles"
+                },
+                "Coupon Invalide": {
+                    process: "1. Vérifier la validité du code coupon\\n2. Contrôler les conditions d'éligibilité\\n3. Vérifier les produits concernés par le coupon\\n4. Expliquer les conditions d'utilisation\\n5. Proposer des coupons valides si disponibles"
+                }
+            },
+            "Demande de Retour": {
+                "Process de retour": {
+                    process: "1. Vérifier l'éligibilité du produit au retour\\n2. Contrôler les délais de retour (14 jours)\\n3. Expliquer la procédure de retour au client\\n4. Générer l'étiquette de retour\\n5. Programmer la collecte du produit"
+                },
+                "Accessoire Manquant": {
+                    process: "1. Identifier l'accessoire manquant\\n2. Vérifier le contenu standard du produit\\n3. Contacter le fournisseur/vendeur\\n4. Organiser l'envoi de l'accessoire manquant\\n5. Offrir un geste commercial si délai important"
+                },
+                "Erreur de Référence": {
+                    process: "1. Comparer la commande avec le produit reçu\\n2. Identifier l'origine de l'erreur\\n3. Organiser la récupération du mauvais produit\\n4. Expédier le bon produit immédiatement\\n5. Offrir un geste commercial pour le désagrément"
+                },
+                "Panne au Déballage": {
+                    process: "1. Documenter la panne constatée\\n2. Vérifier si c'est un défaut de fabrication\\n3. Prendre des photos si nécessaire\\n4. Contacter le service technique/fournisseur\\n5. Proposer remplacement ou remboursement"
+                },
+                "Produit Abîmé": {
+                    process: "1. Évaluer l'état du produit (photos)\\n2. Déterminer si dommage lié au transport\\n3. Contacter le transporteur si nécessaire\\n4. Proposer échange ou remboursement\\n5. Organiser la collecte du produit abîmé"
+                },
+                "Rétractation": {
+                    "Produit Éligible": {
+                        process: "1. Confirmer l'éligibilité au droit de rétractation\\n2. Vérifier les délais (14 jours)\\n3. Expliquer les conditions de retour\\n4. Générer l'étiquette de retour gratuite\\n5. Initier le processus de remboursement"
+                    },
+                    "Produit non Éligible": {
+                        process: "1. Expliquer pourquoi le produit n'est pas éligible\\n2. Référencer les conditions générales\\n3. Proposer des alternatives (garantie, SAV)\\n4. Documenter la demande\\n5. Escalader si contestation du client"
+                    }
+                }
+            },
+            "Demande SAV": {
+                "Autre": {
+                    process: "1. Écouter et analyser la demande spécifique\\n2. Identifier la nature du problème\\n3. Vérifier les conditions de garantie\\n4. Orienter vers le service approprié\\n5. Assurer le suivi de la demande"
+                },
+                "Hors Garantie": {
+                    process: "1. Vérifier la date d'achat et fin de garantie\\n2. Expliquer les limitations hors garantie\\n3. Proposer une réparation payante si possible\\n4. Informer sur les tarifs de réparation\\n5. Documenter la décision du client"
+                },
+                "Prise en Charge": {
+                    process: "1. Valider l'éligibilité à la prise en charge\\n2. Organiser la collecte du produit\\n3. Transmettre au service technique\\n4. Informer le client des délais\\n5. Assurer le suivi régulier"
+                },
+                "Refus de Prise en Charge": {
+                    process: "1. Expliquer les raisons du refus\\n2. Référencer les conditions de garantie\\n3. Proposer des alternatives (réparation payante)\\n4. Documenter la justification\\n5. Escalader si contestation fondée"
+                },
+                "Retard de Prise en Charge": {
+                    process: "1. Identifier les causes du retard\\n2. Contacter le service technique\\n3. Donner un nouveau délai réaliste\\n4. Offrir un geste commercial\\n5. Assurer un suivi prioritaire"
+                }
+            },
+            "Informations": {
+                "Informations Compte Client": {
+                    process: "1. Vérifier l'identité du client\\n2. Accéder aux informations compte\\n3. Répondre aux questions spécifiques\\n4. Proposer les modifications nécessaires\\n5. Confirmer les changements effectués"
+                },
+                "Informations Marketplace": {
+                    process: "1. Identifier la question sur le marketplace\\n2. Expliquer le fonctionnement des vendeurs\\n3. Orienter vers les politiques appropriées\\n4. Donner les contacts vendeurs si nécessaire\\n5. Assurer le suivi si problème complexe"
+                },
+                "Informations Coupon": {
+                    process: "1. Vérifier les coupons disponibles\\n2. Expliquer les conditions d'utilisation\\n3. Aider à l'application du coupon\\n4. Résoudre les problèmes techniques\\n5. Proposer des alternatives si nécessaire"
+                },
+                "Informations sur nos Offres": {
+                    process: "1. Identifier le type d'offre demandée\\n2. Présenter les offres actuelles\\n3. Expliquer les conditions de chaque offre\\n4. Aider à l'inscription si nécessaire\\n5. Orienter vers les supports marketing"
+                },
+                "Informations sur non Produits": {
+                    process: "1. Identifier le produit recherché\\n2. Vérifier la disponibilité future\\n3. Proposer des produits similaires\\n4. Expliquer les délais de réapprovisionnement\\n5. Proposer d'être notifié lors de la disponibilité"
+                },
+                "Nos délais de Livraison": {
+                    process: "1. Identifier la zone de livraison\\n2. Présenter les délais selon le type de produit\\n3. Expliquer les options de livraison\\n4. Informer sur les délais spéciaux (week-end, fêtes)\\n5. Donner les coordonnées pour le suivi"
+                },
+                "Nos Modalités de Paiement": {
+                    process: "1. Présenter tous les modes de paiement\\n2. Expliquer les conditions de chaque mode\\n3. Aider à résoudre les problèmes de paiement\\n4. Expliquer la sécurité des paiements\\n5. Orienter vers l'assistance technique si nécessaire"
+                }
+            },
+            "Livraison": {
+                "Changement de Coordonnées": {
+                    process: "1. Vérifier si la modification est possible\\n2. Contrôler les nouvelles coordonnées\\n3. Mettre à jour dans le système\\n4. Informer le transporteur si nécessaire\\n5. Confirmer les changements au client"
+                },
+                "Livraison dans la Promesse": {
+                    process: "1. Confirmer les délais respectés\\n2. Vérifier la satisfaction client\\n3. S'assurer de l'état du produit\\n4. Demander un feedback sur la livraison\\n5. Noter les points positifs pour l'équipe"
+                },
+                "Livraison hors la Promesse": {
+                    process: "1. Identifier les causes du retard\\n2. S'excuser auprès du client\\n3. Proposer un geste commercial\\n4. Donner un nouveau délai réaliste\\n5. Assurer un suivi prioritaire"
+                },
+                "Comportement Livreur": {
+                    process: "1. Écouter attentivement la plainte\\n2. Documenter précisément les faits\\n3. S'excuser au nom de l'entreprise\\n4. Transmettre au responsable transport\\n5. Assurer le suivi des actions correctives"
+                },
+                "Réclamation Livraison": {
+                    process: "1. Analyser la nature de la réclamation\\n2. Vérifier les informations de livraison\\n3. Contacter le transporteur si nécessaire\\n4. Proposer une solution appropriée\\n5. Assurer le suivi jusqu'à résolution"
+                },
+                "Réclamation Livraison Amana": {
+                    process: "1. Contacter directement Amana\\n2. Transmettre les détails de la réclamation\\n3. Faire le lien entre le client et Amana\\n4. Assurer le suivi de la résolution\\n5. S'assurer de la satisfaction finale"
+                }
+            },
+            "Paiement / Remboursement": {
+                "Facture": {
+                    "Demande de Facture": {
+                        process: "1. Vérifier les informations de commande\\n2. Générer la facture dans le système\\n3. Vérifier les informations fiscales\\n4. Envoyer la facture par email\\n5. Confirmer la réception avec le client"
+                    },
+                    "Facture Érronée": {
+                        process: "1. Identifier les erreurs sur la facture\\n2. Vérifier les bonnes informations\\n3. Corriger et régénérer la facture\\n4. Annuler l'ancienne facture si nécessaire\\n5. Envoyer la facture corrigée"
+                    },
+                    "Facture Indisponible": {
+                        process: "1. Vérifier les raisons de l'indisponibilité\\n2. Contrôler le statut de la commande\\n3. Expliquer les délais de génération\\n4. Programmer l'envoi dès disponibilité\\n5. Proposer une attestation temporaire"
+                    },
+                    "Preuve d'Achat": {
+                        process: "1. Vérifier l'historique de commande\\n2. Générer l'attestation d'achat\\n3. Inclure tous les détails nécessaires\\n4. Envoyer par email sécurisé\\n5. Confirmer la réception"
+                    }
+                },
+                "Problème de Paiement": {
+                    process: "1. Identifier le type de problème de paiement\\n2. Vérifier les informations bancaires\\n3. Contacter le service paiement\\n4. Proposer des alternatives de paiement\\n5. Assurer le suivi jusqu'à résolution"
+                },
+                "Remboursement": {
+                    "Code WAFACASH Erronné": {
+                        process: "1. Vérifier le code WAFACASH généré\\n2. Identifier l'erreur dans le système\\n3. Corriger et générer un nouveau code\\n4. Annuler l'ancien code si nécessaire\\n5. Envoyer le code correct au client"
+                    },
+                    "Code WAFACASH non Reçu ou Expiré": {
+                        process: "1. Vérifier le statut du code dans le système\\n2. Contrôler la date d'expiration (90 jours)\\n3. Régénérer un nouveau code si expiré\\n4. Renvoyer par SMS et email\\n5. Confirmer la réception avec le client"
+                    },
+                    "Demande de Modification du Bénéficiaire": {
+                        process: "1. Vérifier l'identité du demandeur\\n2. Contrôler les raisons de la modification\\n3. Valider les nouvelles informations\\n4. Générer un nouveau code au bon nom\\n5. Annuler l'ancien code"
+                    },
+                    "Nom Client WAFACASH Erronné ou Incomplet": {
+                        process: "1. Identifier l'erreur dans le nom\\n2. Vérifier les bonnes informations client\\n3. Corriger dans le système\\n4. Régénérer le code avec le bon nom\\n5. Informer le client des corrections"
+                    },
+                    "Remboursement CB non Reçu": {
+                        process: "1. Vérifier le statut du remboursement\\n2. Contrôler les délais bancaires (3-5 jours)\\n3. Contacter la banque si délai dépassé\\n4. Fournir les justificatifs au client\\n5. Assurer le suivi jusqu'à crédit effectif"
+                    }
+                }
+            },
+            "Réclamation": {
+                "Autre": {
+                    process: "1. Écouter attentivement la réclamation\\n2. Analyser et catégoriser le problème\\n3. Rechercher une solution appropriée\\n4. Proposer des actions correctives\\n5. Assurer le suivi complet"
+                },
+                "Produit Manquant": {
+                    process: "1. Vérifier le contenu de la commande livrée\\n2. Identifier le/les produits manquants\\n3. Contrôler avec le transporteur\\n4. Organiser l'envoi du produit manquant\\n5. Offrir un geste commercial pour le désagrément"
+                },
+                "Produit non Reçu": {
+                    process: "1. Vérifier le statut de livraison\\n2. Contacter le transporteur pour enquête\\n3. Localiser le colis si possible\\n4. Proposer un renvoi ou remboursement\\n5. Assurer un suivi prioritaire"
+                },
+                "Produit Reçu en Double": {
+                    process: "1. Vérifier s'il s'agit d'une erreur système\\n2. Contrôler les charges sur le compte client\\n3. Organiser la collecte du produit en trop\\n4. Ajuster la facturation si nécessaire\\n5. S'excuser pour l'erreur"
+                }
+            },
+            "SPAM / Test / Plaisantin": {
+                process: "1. Identifier la nature non-légitime de la demande\\n2. Ne pas engager de conversation prolongée\\n3. Documenter le contact dans le système\\n4. Appliquer les mesures de protection\\n5. Signaler si récurrence du comportement"
+            }
+        };
